@@ -1,6 +1,5 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { React, useEffect, useState } from "react";
-import Loadable from "react-loadable";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -8,10 +7,10 @@ import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 import SortMenu from "scenes/widgets/SortMenu";
 import PhotoUploadWidget from "scenes/widgets/PhotoUploadWidget";
-const PostsWidget = Loadable({
+const PostsWidget = {
   loader: () => import("scenes/widgets/PostsWidget"),
   loading: () => <div>Loading</div>,
-});
+};
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
