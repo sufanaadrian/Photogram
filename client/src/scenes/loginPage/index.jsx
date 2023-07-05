@@ -6,7 +6,6 @@ import {
   Button,
 } from "@mui/material";
 import Form from "./Form";
-import videoBG from "../../assets/video2.mp4";
 import { useState, useEffect } from "react";
 
 const LoginPage = () => {
@@ -30,7 +29,6 @@ const LoginPage = () => {
   return (
     <div>
       <div className="video">
-        <video src={videoBG} autoPlay loop muted></video>
         <div className="overlayVideo"></div>
         {showContent && (
           <div className="contentVideo">
