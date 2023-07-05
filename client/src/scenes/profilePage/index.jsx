@@ -7,10 +7,7 @@ import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 import SortMenu from "scenes/widgets/SortMenu";
 import PhotoUploadWidget from "scenes/widgets/PhotoUploadWidget";
-const PostsWidget = {
-  loader: () => import("scenes/widgets/PostsWidget"),
-  loading: () => <div>Loading</div>,
-};
+import PostsWidget from "scenes/widgets/PostsWidget";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
