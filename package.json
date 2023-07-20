@@ -14,5 +14,8 @@
     "react-progressive-graceful-image": "^0.7.0",
     "react-progressive-image": "^0.6.0",
     "stream": "^0.0.2"
+  },
+  "scripts": {
+    "build": "react-scripts build"
   }
 }
