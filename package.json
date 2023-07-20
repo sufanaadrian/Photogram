@@ -16,6 +16,7 @@
     "stream": "^0.0.2"
   },
   "scripts": {
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "node": "server/node index.js"
   }
 }
