@@ -110,7 +110,7 @@ const PostWidget = ({
   const handleDeleteClick = async () => {
     try {
       const response = await fetch(
-        `https://photogram-api.onrender.com/posts/${postId}/deletePost`,
+        `https://photogram-backend.onrender.com/posts/${postId}/deletePost`,
         {
           method: "DELETE",
           headers: {
@@ -129,7 +129,7 @@ const PostWidget = ({
   };
   const patchLike = async () => {
     const response = await fetch(
-      `https://photogram-api.onrender.com/posts/${postId}/like`,
+      `https://photogram-backend.onrender.com/posts/${postId}/like`,
       {
         method: "PATCH",
         headers: {
@@ -146,7 +146,7 @@ const PostWidget = ({
   const patchSharable = async () => {
     // send a request to set isSharable to true
     const response = await fetch(
-      `https://photogram-api.onrender.com/posts/${postId}/share`,
+      `https://photogram-backend.onrender.com/posts/${postId}/share`,
       {
         method: "PATCH",
         headers: {
@@ -161,7 +161,7 @@ const PostWidget = ({
   };
   const patchSharableFalse = async () => {
     const response = await fetch(
-      `https://photogram-api.onrender.com/posts/${postId}/removeShare`,
+      `https://photogram-backend.onrender.com/posts/${postId}/removeShare`,
       {
         method: "PATCH",
         headers: {
@@ -178,7 +178,7 @@ const PostWidget = ({
     }
   };
   const handleSaveClick = () => {
-    const url = `https://photogram-api.onrender.com/assets/${picturePath}`;
+    const url = `https://photogram-backend.onrender.com/assets/${picturePath}`;
 
     fetch(url)
       .then((response) => response.blob())
@@ -229,7 +229,7 @@ const PostWidget = ({
               opacity: showExifData ? "0.1" : "1",
               zIndex: 1,
             }}
-            src={`https://photogram-api.onrender.com/assets/${picturePath}`}
+            src={`https://photogram-backend.onrender.com/assets/${picturePath}`}
           />
           {isFullScreen && isLargeGrid && (
             <div>

@@ -8,7 +8,7 @@ const UserImage = ({ image, size = "50px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://photogram-api.onrender.com/assets/${image}`}
+        src={`https://photogram-backend.onrender.com/assets/${image}`}
       />
     </Box>
   );

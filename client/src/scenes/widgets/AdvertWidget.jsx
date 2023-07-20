@@ -28,7 +28,7 @@ const AdvertWidget = () => {
           width="100%"
           height="auto"
           alt="advert"
-          src="https://photogram-api.onrender.com/assets/pagev1.2.png"
+          src="https://photogram-backend.onrender.com/assets/pagev1.2.png"
           style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
         />
         <FlexBetween>
@@ -67,7 +67,7 @@ const AdvertWidget = () => {
           width="100%"
           height="auto"
           alt="advert"
-          src="https://photogram-api.onrender.com/assets/galleryPageView.png"
+          src="https://photogram-backend.onrender.com/assets/galleryPageView.png"
           style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
         />
         <FlexBetween>

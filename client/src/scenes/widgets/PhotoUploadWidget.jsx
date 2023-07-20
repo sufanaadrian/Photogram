@@ -74,7 +74,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
       formDatas.push(formData);
     }
     for (let i = 0; i < formDatas.length; i++) {
-      await fetch(`https://photogram-api.onrender.com/posts`, {
+      await fetch(`https://photogram-backend.onrender.com/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formDatas[i],

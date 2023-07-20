@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 
 export const getPosts = async (dispatch, token) => {
   const response = await fetch(
-    `https://photogram-api.onrender.com/posts?isSharable=true`,
+    `https://photogram-backend.onrender.com/posts?isSharable=true`,
     {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -17,7 +17,7 @@ export const getPosts = async (dispatch, token) => {
 
 export const getUserPosts = async (dispatch, token, userId) => {
   const response = await fetch(
-    `https://photogram-api.onrender.com/posts/${userId}/posts`,
+    `https://photogram-backend.onrender.com/posts/${userId}/posts`,
     {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -29,7 +29,7 @@ export const getUserPosts = async (dispatch, token, userId) => {
 };
 export const generatePDF = async (token, loggedInUserId) => {
   const response = await fetch(
-    `https://photogram-api.onrender.com/posts/${loggedInUserId}/posts`,
+    `https://photogram-backend.onrender.com/posts/${loggedInUserId}/posts`,
     {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
