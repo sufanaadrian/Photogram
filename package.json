@@ -17,6 +17,6 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "start": "server/node index.js"
+    "start": "node server/index.js"
   }
 }
