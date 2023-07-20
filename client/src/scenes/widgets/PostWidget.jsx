@@ -110,7 +110,7 @@ const PostWidget = ({
   const handleDeleteClick = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/posts/${postId}/deletePost`,
+        `https://photogram-api.onrender.com/posts/${postId}/deletePost`,
         {
           method: "DELETE",
           headers: {
@@ -128,14 +128,17 @@ const PostWidget = ({
     }
   };
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
+    const response = await fetch(
+      `https://photogram-api.onrender.com/posts/${postId}/like`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      }
+    );
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
@@ -143,7 +146,7 @@ const PostWidget = ({
   const patchSharable = async () => {
     // send a request to set isSharable to true
     const response = await fetch(
-      `http://localhost:3001/posts/${postId}/share`,
+      `https://photogram-api.onrender.com/posts/${postId}/share`,
       {
         method: "PATCH",
         headers: {
@@ -158,7 +161,7 @@ const PostWidget = ({
   };
   const patchSharableFalse = async () => {
     const response = await fetch(
-      `http://localhost:3001/posts/${postId}/removeShare`,
+      `https://photogram-api.onrender.com/posts/${postId}/removeShare`,
       {
         method: "PATCH",
         headers: {
@@ -175,7 +178,7 @@ const PostWidget = ({
     }
   };
   const handleSaveClick = () => {
-    const url = `http://localhost:3001/assets/${picturePath}`;
+    const url = `https://photogram-api.onrender.com/assets/${picturePath}`;
 
     fetch(url)
       .then((response) => response.blob())
@@ -226,7 +229,7 @@ const PostWidget = ({
               opacity: showExifData ? "0.1" : "1",
               zIndex: 1,
             }}
-            src={`http://localhost:3001/assets/${picturePath}`}
+            src={`https://photogram-api.onrender.com/assets/${picturePath}`}
           />
           {isFullScreen && isLargeGrid && (
             <div>

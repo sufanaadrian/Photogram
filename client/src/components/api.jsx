@@ -3,27 +3,33 @@ import { setPosts } from "state";
 import jsPDF from "jspdf";
 
 export const getPosts = async (dispatch, token) => {
-  const response = await fetch(`http://localhost:3001/posts?isSharable=true`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await fetch(
+    `https://photogram-api.onrender.com/posts?isSharable=true`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const data = await response.json();
 
   dispatch(setPosts({ posts: data }));
 };
 
 export const getUserPosts = async (dispatch, token, userId) => {
-  const response = await fetch(`http://localhost:3001/posts/${userId}/posts`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await fetch(
+    `https://photogram-api.onrender.com/posts/${userId}/posts`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const data = await response.json();
 
   dispatch(setPosts({ posts: data }));
 };
 export const generatePDF = async (token, loggedInUserId) => {
   const response = await fetch(
-    `http://localhost:3001/posts/${loggedInUserId}/posts`,
+    `https://photogram-api.onrender.com/posts/${loggedInUserId}/posts`,
     {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
