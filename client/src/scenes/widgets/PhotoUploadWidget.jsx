@@ -34,57 +34,65 @@ const MyPostWidget = ({ picturePath, userId }) => {
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
-  const handlePost = async () => {
+ const handlePost = async () => {
     const formDatas = [];
     setIsLoading(!isLoading);
 
     const colorThief = new ColorThief();
     for (let i = 0; i < images.length; i++) {
-      const compressedImage = await imageCompression(images[i], {
-        maxSizeMB: 1.5, // Set the maximum allowed file size after compression (approximately 1.5MB)
-        maxWidthOrHeight: 1200, // Set the maximum width/height of the compressed image
-      });
       const formData = new FormData();
-      console.log("mods added");
       formData.append("userId", _id);
       formData.append("description", descriptions[i]);
-      formData.append("picture", compressedImage);
-      formData.append("picturePath", compressedImage.name);
-      console.log(compressedImage.name);
-      if (images[i]) {
-        const exifData = await new Promise((resolve, reject) => {
-          EXIF.getData(images[i], function () {
-            resolve(EXIF.getAllTags(this));
-          });
-        });
-        formData.append("exifData", JSON.stringify(exifData));
-        const colorArray = await new Promise((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = "Anonymous";
-          img.src = URL.createObjectURL(compressedImage);
-          img.onload = () => {
-            const colorArray = colorThief.getPalette(img, 3);
-            resolve(colorArray);
-          };
-        });
-        const dominantColors = [
-          { r: colorArray[0][0], g: colorArray[0][1], b: colorArray[0][2] },
-          { r: colorArray[1][0], g: colorArray[1][1], b: colorArray[1][2] },
-          { r: colorArray[2][0], g: colorArray[2][1], b: colorArray[2][2] },
-        ];
 
-        for (let i = 0; i < dominantColors.length; i++) {
-          const color = dominantColors[i];
-          formData.append(`dominantColors[${i}][r]`, color.r);
-          formData.append(`dominantColors[${i}][g]`, color.g);
-          formData.append(`dominantColors[${i}][b]`, color.b);
+      const options = {
+        maxSizeMB: 2, // Adjust the maxSizeMB value to set the desired maximum size in MB
+        maxWidthOrHeight: 1200, // Adjust the maxWidthOrHeight value to set the desired maximum width or height
+        useWebWorker: true, // Set to true to utilize Web Workers for faster compression (if available)
+      };
+
+      try {
+        const compressedImage = await imageCompression(images[i], options);
+        formData.append("picture", compressedImage, compressedImage.name);
+        formData.append("picturePath", compressedImage.name);
+
+        if (images[i]) {
+          const exifData = await new Promise((resolve, reject) => {
+            EXIF.getData(images[i], function () {
+              resolve(EXIF.getAllTags(this));
+            });
+          });
+          formData.append("exifData", JSON.stringify(exifData));
+          const colorArray = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = URL.createObjectURL(images[i]);
+            img.onload = () => {
+              const colorArray = colorThief.getPalette(img, 3);
+              resolve(colorArray);
+            };
+          });
+          const dominantColors = [
+            { r: colorArray[0][0], g: colorArray[0][1], b: colorArray[0][2] },
+            { r: colorArray[1][0], g: colorArray[1][1], b: colorArray[1][2] },
+            { r: colorArray[2][0], g: colorArray[2][1], b: colorArray[2][2] },
+          ];
+
+          for (let i = 0; i < dominantColors.length; i++) {
+            const color = dominantColors[i];
+            formData.append(`dominantColors[${i}][r]`, color.r);
+            formData.append(`dominantColors[${i}][g]`, color.g);
+            formData.append(`dominantColors[${i}][b]`, color.b);
+          }
         }
+      } catch (error) {
+        console.error("Image compression error:", error);
+        // Handle any compression errors here
       }
 
       formDatas.push(formData);
     }
     for (let i = 0; i < formDatas.length; i++) {
-      await fetch(`https://photogram-backend.onrender.com/posts`, {
+      await fetch(`http://localhost:3001/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formDatas[i],
