@@ -34,7 +34,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
- const handlePost = async () => {
+  const handlePost = async () => {
     const formDatas = [];
     setIsLoading(!isLoading);
 
@@ -92,7 +92,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
       formDatas.push(formData);
     }
     for (let i = 0; i < formDatas.length; i++) {
-      await fetch(`http://localhost:3001/posts`, {
+      await fetch(`https://photogram-backend.onrender.com/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formDatas[i],
