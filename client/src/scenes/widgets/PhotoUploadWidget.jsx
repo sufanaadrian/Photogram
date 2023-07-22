@@ -1,4 +1,8 @@
-import { DeleteOutlined, LoopOutlined } from "@mui/icons-material";
+import {
+  CompressOutlined,
+  DeleteOutlined,
+  LoopOutlined,
+} from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -16,6 +20,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EXIF from "exif-js";
 import ColorThief from "colorthief";
+import imageCompression from "browser-image-compression";
 const MyPostWidget = ({ picturePath, userId }) => {
   const dispatch = useDispatch();
   const [hasImage, setHasImage] = useState(false);
@@ -35,12 +40,17 @@ const MyPostWidget = ({ picturePath, userId }) => {
 
     const colorThief = new ColorThief();
     for (let i = 0; i < images.length; i++) {
+      const compressedImage = await imageCompression(images[i], {
+        maxSizeMB: 1.5, // Set the maximum allowed file size after compression (approximately 1.5MB)
+        maxWidthOrHeight: 1200, // Set the maximum width/height of the compressed image
+      });
       const formData = new FormData();
+      console.log("mods added");
       formData.append("userId", _id);
       formData.append("description", descriptions[i]);
-      formData.append("picture", images[i]);
-      formData.append("picturePath", images[i].name);
-
+      formData.append("picture", compressedImage);
+      formData.append("picturePath", compressedImage.name);
+      console.log(compressedImage.name);
       if (images[i]) {
         const exifData = await new Promise((resolve, reject) => {
           EXIF.getData(images[i], function () {
@@ -51,7 +61,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
         const colorArray = await new Promise((resolve, reject) => {
           const img = new Image();
           img.crossOrigin = "Anonymous";
-          img.src = URL.createObjectURL(images[i]);
+          img.src = URL.createObjectURL(compressedImage);
           img.onload = () => {
             const colorArray = colorThief.getPalette(img, 3);
             resolve(colorArray);
