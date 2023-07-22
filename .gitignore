@@ -1,13 +1,9 @@
 node_modules
 MERN-gallery/
 node-modules/
-*.png
-*.jpg
+
 node_modules/
-*.jpg
-*.png
-*.jpeg
-*.mp4
+
 # dependencies
 /node_modules
 /.pnp
