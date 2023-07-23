@@ -108,10 +108,7 @@ const Navbar = () => {
             justifyContent="center"
             gap="2rem"
           >
-            <MenuItem
-              value="Gallery"
-              onClick={() => navigate(`/profile/${loggedInUserId}`)}
-            >
+            <MenuItem value="Gallery" onClick={() => navigate(`/all`)}>
               <CollectionsOutlined
                 sx={{ fontSize: "35px" }}
               ></CollectionsOutlined>
@@ -132,20 +129,37 @@ const Navbar = () => {
               )}
             </IconButton>
 
-            <Typography
-              onClick={() => dispatch(setLogout())}
-              fontSize="15px"
-              fontWeight="bold"
-              sx={{
-                "&:hover": {
-                  cursor: "pointer",
-                  transition: "all 0.3s",
-                  transform: "scale(1.1) ",
-                },
-              }}
-            >
-              Log Out
-            </Typography>
+            {loggedInUserId !== null ? (
+              <Typography
+                onClick={() => dispatch(setLogout())}
+                fontSize="15px"
+                fontWeight="bold"
+                sx={{
+                  "&:hover": {
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    transform: "scale(1.1) ",
+                  },
+                }}
+              >
+                Log Out
+              </Typography>
+            ) : (
+              <Typography
+                onClick={() => navigate("/login")}
+                fontSize="15px"
+                fontWeight="bold"
+                sx={{
+                  "&:hover": {
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    transform: "scale(1.1) ",
+                  },
+                }}
+              >
+                Log In
+              </Typography>
+            )}
           </FlexBetween>
           {/* CLOSE ICON */}
           <Box position="fixed" bottom="0" p="0rem 1.5rem">
