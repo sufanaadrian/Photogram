@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
 import { getUserPosts } from "components/api";
+import BASE_URL from "../../config";
 const PostWidget = ({
   postId,
   postUserId,
@@ -53,7 +54,9 @@ const PostWidget = ({
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserId = useSelector((state) =>
+    state.user ? state.user._id : null
+  );
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
   const { palette } = useTheme();
@@ -109,16 +112,13 @@ const PostWidget = ({
   };
   const handleDeleteClick = async () => {
     try {
-      const response = await fetch(
-        `https://photogram-backend.onrender.com/posts/${postId}/deletePost`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${BASE_URL}/posts/${postId}/deletePost`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         // Call the getUserPosts function to refetch the updated list of posts
         getUserPosts(dispatch, token, loggedInUserId);
@@ -128,49 +128,40 @@ const PostWidget = ({
     }
   };
   const patchLike = async () => {
-    const response = await fetch(
-      `https://photogram-backend.onrender.com/posts/${postId}/like`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loggedInUserId }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}/posts/${postId}/like`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
 
   const patchSharable = async () => {
     // send a request to set isSharable to true
-    const response = await fetch(
-      `https://photogram-backend.onrender.com/posts/${postId}/share`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ isSharable: true }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}/posts/${postId}/share`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isSharable: true }),
+    });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
   const patchSharableFalse = async () => {
-    const response = await fetch(
-      `https://photogram-backend.onrender.com/posts/${postId}/removeShare`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ isSharable: false }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}/posts/${postId}/removeShare`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isSharable: false }),
+    });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
     if (!regex.test(window.location.pathname)) {
@@ -178,7 +169,7 @@ const PostWidget = ({
     }
   };
   const handleSaveClick = () => {
-    const url = `https://photogram-backend.onrender.com/assets/${picturePath}`;
+    const url = `${BASE_URL}/assets/${picturePath}`;
 
     fetch(url)
       .then((response) => response.blob())
@@ -208,7 +199,20 @@ const PostWidget = ({
         style={{ position: "absolute", top: 0, left: 0 }}
         friendId={postUserId}
         name={name}
-        subtitle={"Shot on: " + exifDataObject.Model + " Location: " + location}
+        subtitle={
+          <>
+            Shot on: {exifDataObject.Make} {exifDataObject.Model}
+            <div style={{ lineHeight: "0.5", whiteSpace: "pre" }}>
+              {"\n"}Lens:{" "}
+              {exifDataObject.Make === "Canon"
+                ? " EF" +
+                  exifDataObject.FocalLength +
+                  "mm f/" +
+                  exifDataObject.FNumber
+                : exifDataObject.undefined}
+            </div>
+          </>
+        }
         userPicturePath={userPicturePath}
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
       />
@@ -229,7 +233,7 @@ const PostWidget = ({
               opacity: showExifData ? "0.1" : "1",
               zIndex: 1,
             }}
-            src={`https://photogram-backend.onrender.com/assets/${picturePath}`}
+            src={`${BASE_URL}/assets/${picturePath}`}
           />
           {isFullScreen && isLargeGrid && (
             <div>

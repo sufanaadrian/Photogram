@@ -8,7 +8,7 @@ import UserWidget from "scenes/widgets/UserWidget";
 import SortMenu from "scenes/widgets/SortMenu";
 import PhotoUploadWidget from "scenes/widgets/PhotoUploadWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
-
+import BASE_URL from "../../config"; // Import the BASE_URL
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
@@ -17,13 +17,10 @@ const ProfilePage = () => {
   const { picturePath } = useSelector((state) => state.user);
 
   const getUser = async () => {
-    const response = await fetch(
-      `https://photogram-backend.onrender.com/users/${userId}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${BASE_URL}/users/${userId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const data = await response.json();
     setUser(data);
   };

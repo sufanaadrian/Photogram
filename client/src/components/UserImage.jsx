@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-
+import BASE_URL from "../config";
 const UserImage = ({ image, size = "50px" }) => {
   return (
     <Box width={size} height={size}>
@@ -8,7 +8,7 @@ const UserImage = ({ image, size = "50px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://photogram-backend.onrender.com/assets/${image}`}
+        src={`${BASE_URL}/assets/${image}`}
       />
     </Box>
   );

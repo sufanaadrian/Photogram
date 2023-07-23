@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import EXIF from "exif-js";
 import ColorThief from "colorthief";
 import imageCompression from "browser-image-compression";
+import BASE_URL from "../../config";
 const MyPostWidget = ({ picturePath, userId }) => {
   const dispatch = useDispatch();
   const [hasImage, setHasImage] = useState(false);
@@ -92,7 +93,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
       formDatas.push(formData);
     }
     for (let i = 0; i < formDatas.length; i++) {
-      await fetch(`https://photogram-backend.onrender.com/posts`, {
+      await fetch(`${BASE_URL}/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formDatas[i],

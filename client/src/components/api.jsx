@@ -1,40 +1,31 @@
 // api.js
 import { setPosts } from "state";
 import jsPDF from "jspdf";
-
+import BASE_URL from "../config"; // Import the BASE_URL
 export const getPosts = async (dispatch, token) => {
-  const response = await fetch(
-    `https://photogram-backend.onrender.com/posts?isSharable=true`,
-    {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/posts?isSharable=true`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const data = await response.json();
 
   dispatch(setPosts({ posts: data }));
 };
 
 export const getUserPosts = async (dispatch, token, userId) => {
-  const response = await fetch(
-    `https://photogram-backend.onrender.com/posts/${userId}/posts`,
-    {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/posts/${userId}/posts`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const data = await response.json();
 
   dispatch(setPosts({ posts: data }));
 };
 export const generatePDF = async (token, loggedInUserId) => {
-  const response = await fetch(
-    `https://photogram-backend.onrender.com/posts/${loggedInUserId}/posts`,
-    {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/posts/${loggedInUserId}/posts`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
   if (!response.ok) {
     console.error(
       `Could not generate PDF: ${response.status} ${response.statusText}`
