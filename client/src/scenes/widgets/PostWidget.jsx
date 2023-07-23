@@ -72,7 +72,7 @@ const PostWidget = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorComments, setAnchorComments] = useState(null);
   const [showIconButton, setShowIconButton] = useState(false);
-  const regex = /\/profile/;
+  const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
   useEffect(() => {
@@ -110,6 +110,7 @@ const PostWidget = ({
     setAnchorComments(event.currentTarget);
     setIsComments(!isComments);
   };
+
   const handleDeleteClick = async () => {
     try {
       const response = await fetch(`${BASE_URL}/posts/${postId}/deletePost`, {

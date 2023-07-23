@@ -46,7 +46,9 @@ const SortMenu = ({
   const [dateInput, setDateInput] = useState("");
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserId = useSelector((state) =>
+    state.user ? state.user._id : null
+  );
   const [selectedColor, setSelectedColor] = useState("#ffffff");
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [xl, setXl] = useState(1);

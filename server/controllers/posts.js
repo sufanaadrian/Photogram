@@ -47,7 +47,14 @@ export const getPostsFromFeedFunc = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
+export const getAllPostsFunc = async (req, res) => {
+  try {
+    const posts = await Post.find(); // Fetch all posts
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 export const getPostsByUserFunc = async (req, res) => {
   try {
     const { userId } = req.params;

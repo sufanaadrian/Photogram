@@ -6,7 +6,7 @@ const UploadDetails = ({ userId, name, subtitle, userPicturePath }) => {
   const { palette } = useTheme();
 
   const medium = palette.neutral.medium;
-  const regex = /\/profile/;
+  const regex = /\/all/;
   if (!regex.test(window.location.pathname)) {
     return (
       <FlexBetween p="0 0 0.5rem 0">

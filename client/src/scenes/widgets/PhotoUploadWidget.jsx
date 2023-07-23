@@ -31,6 +31,8 @@ const MyPostWidget = ({ picturePath, userId }) => {
   const [, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
+
+  const { _id_coded } = "64bc0534c39d385c73c1310b";
   const token = useSelector((state) => state.token);
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -38,11 +40,15 @@ const MyPostWidget = ({ picturePath, userId }) => {
   const handlePost = async () => {
     const formDatas = [];
     setIsLoading(!isLoading);
-
+    const userId = _id !== null ? _id : _id_coded;
     const colorThief = new ColorThief();
     for (let i = 0; i < images.length; i++) {
       const formData = new FormData();
-      formData.append("userId", _id);
+      if (_id !== null) {
+        formData.append("userId", _id);
+      } else {
+        formData.append("userId", _id_coded);
+      }
       formData.append("description", descriptions[i]);
 
       const options = {

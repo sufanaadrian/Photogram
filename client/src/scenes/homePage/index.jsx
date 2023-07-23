@@ -6,7 +6,6 @@ import AdvertWidget from "scenes/widgets/AdvertWidget";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const { _id } = useSelector((state) => state.user);
 
   return (
     <Box>
@@ -24,7 +23,7 @@ const HomePage = () => {
           ml={isNonMobileScreens ? undefined : "1rem"}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <PostsWidget userId={_id} />
+          <PostsWidget />
         </Box>
 
         <Box flexBasis="25%" padding={isNonMobileScreens ? "2rem 2%" : "1rem"}>

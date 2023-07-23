@@ -2,6 +2,7 @@ import express from "express";
 import {
   getPostsFromFeedFunc,
   getPostsByUserFunc,
+  getAllPostsFunc,
   likePostFromFeedFunc,
   sharePostInFeedFunc,
   removePostFromFeedFunc,
@@ -12,8 +13,9 @@ import { verifyWithToken as verifyWithToken } from "../middleware/auth.js";
 const router = express.Router();
 
 /* READ */
-router.get("/", verifyWithToken, getPostsFromFeedFunc);
-router.get("/:userId/posts", verifyWithToken, getPostsByUserFunc);
+router.get("/", getPostsFromFeedFunc);
+router.get("/:userId/posts", getPostsByUserFunc);
+router.get("/all", getAllPostsFunc); // New route to fetch all posts
 
 /* UPDATE */
 router.patch("/:id/like", verifyWithToken, likePostFromFeedFunc);

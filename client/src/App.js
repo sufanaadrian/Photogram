@@ -19,15 +19,13 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
-            <Route
-              path="/profile/:userId"
-              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
-            />
+            <Route path="/all" element={<ProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

@@ -3,10 +3,7 @@ import { setPosts } from "state";
 import jsPDF from "jspdf";
 import BASE_URL from "../config"; // Import the BASE_URL
 export const getPosts = async (dispatch, token) => {
-  const response = await fetch(`${BASE_URL}/posts?isSharable=true`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await fetch(`${BASE_URL}/posts?isSharable=true`);
   const data = await response.json();
 
   dispatch(setPosts({ posts: data }));
@@ -21,11 +18,19 @@ export const getUserPosts = async (dispatch, token, userId) => {
 
   dispatch(setPosts({ posts: data }));
 };
+export const getPostsAll = async (dispatch) => {
+  const response = await fetch(`${BASE_URL}/posts/all`);
+  const data = await response.json();
+
+  dispatch(setPosts({ posts: data }));
+};
+
 export const generatePDF = async (token, loggedInUserId) => {
-  const response = await fetch(`${BASE_URL}/posts/${loggedInUserId}/posts`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  // const response = await fetch(`${BASE_URL}/posts/${loggedInUserId}/posts`, {
+  //   method: "GET",
+  //   headers: { Authorization: `Bearer ${token}` },
+  // });
+  const response = await fetch(`${BASE_URL}/posts/all`);
   if (!response.ok) {
     console.error(
       `Could not generate PDF: ${response.status} ${response.statusText}`

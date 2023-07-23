@@ -3,19 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import PostWidget from "./PostWidget";
 import { Container, Row, Col } from "react-grid-system";
 import { Pagination } from "@mui/material";
-import { getPosts, getUserPosts } from "components/api";
+import { getPosts, getUserPosts, getPostsAll } from "components/api";
 
-const PostsWidget = ({
-  userId,
-  sortCriteria,
-  filterCriteria,
-  colorCriteria,
-  xl,
-}) => {
+const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
-  const regex = /\/profile/;
+  const regex = /\/all/; // Update the regex to check for "/all" page
   const [page, setPage] = useState(1);
   let postsPerPage;
   let isLargeGrid;
@@ -43,6 +37,7 @@ const PostsWidget = ({
       r >= rMin && r <= rMax && g >= gMin && g <= gMax && b >= bMin && b <= bMax
     );
   }
+  console.log(isProfile);
 
   // Add this code block to define the color range from the colorCriteria prop
   const colorRange = colorCriteria ? hexToRgb(colorCriteria) : null;
@@ -61,9 +56,9 @@ const PostsWidget = ({
 
   useEffect(() => {
     if (regex.test(window.location.pathname)) {
-      getUserPosts(dispatch, token, userId);
+      getPostsAll(dispatch);
     } else {
-      getPosts(dispatch, token);
+      getPosts(dispatch);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const sortedPostsFeed = Array.isArray(posts)

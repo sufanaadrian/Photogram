@@ -10,29 +10,24 @@ import PhotoUploadWidget from "scenes/widgets/PhotoUploadWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import BASE_URL from "../../config"; // Import the BASE_URL
 const ProfilePage = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Initialize as undefined
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
+  const userIdCoded = "64bc0534c39d385c73c1310b"; // Hardcoded userId  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:600px)");
-  const { picturePath } = useSelector((state) => state.user);
-
-  const getUser = async () => {
-    const response = await fetch(`${BASE_URL}/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    setUser(data);
-  };
+  const loggedInUserId = useSelector((state) => state.user?._id ?? null);
   const [sortCriteria, setSortCriteria] = useState("all");
   const [filterCriteria, setFilterCriteria] = useState("all");
   const [colorCriteria, setColorCriteria] = useState("all");
   const [xl, setXl] = useState(1);
+  const getUser = async () => {
+    const response = await fetch(`${BASE_URL}/users/${userIdCoded}`);
+    const data = await response.json();
+    setUser(data);
+  };
   useEffect(() => {
     getUser();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!user) return null;
+  }, []);
   const spans = document.querySelectorAll(".word span");
 
   spans.forEach((span, idx) => {
@@ -75,10 +70,12 @@ const ProfilePage = () => {
           <Box pb="1rem" />
 
           <div className="sticky">
-            <PhotoUploadWidget picturePath={picturePath} userId={userId} />
+            {loggedInUserId && <PhotoUploadWidget userId={loggedInUserId} />}{" "}
             <Box mb="1rem" />
-
-            <UserWidget userId={userId} picturePath={user.picturePath} />
+            <UserWidget
+              userId={userIdCoded}
+              picturePath={user !== null ? user.picturePath : null}
+            />
             <Box mb="2rem" />
           </div>
         </Box>
@@ -96,7 +93,6 @@ const ProfilePage = () => {
           />
 
           <PostsWidget
-            userId={userId}
             sortCriteria={sortCriteria}
             filterCriteria={filterCriteria}
             colorCriteria={colorCriteria}

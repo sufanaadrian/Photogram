@@ -19,13 +19,13 @@ import {
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state";
+import { setMode, setLogout, setLogin } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
 const Navbar = () => {
   const isDesktop = useMediaQuery("(min-width: 1000px)"); //if width >1000 we are on desktop
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserId = useSelector((state) => state.user?._id ?? null);
   const [isMobileDropDownPressed, setIsMobileDropDownPressed] = useState(false);
 
   const dispatch = useDispatch();
@@ -60,19 +60,14 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isDesktop ? (
         <FlexBetween gap="1rem">
-          <MenuItem
-            value="Gallery"
-            onClick={() => navigate(`/profile/${loggedInUserId}`)}
-          >
+          <MenuItem value="Gallery" onClick={() => navigate(`/all`)}>
             <CollectionsOutlined
               sx={{ fontSize: "35px" }}
             ></CollectionsOutlined>
             <Typography>Gallery</Typography>
           </MenuItem>
-
           <Message sx={{ fontSize: "20px" }} />
           <Notifications sx={{ fontSize: "20px" }} />
-
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <LightMode sx={{ fontSize: "20px" }} />
@@ -80,7 +75,12 @@ const Navbar = () => {
               <DarkMode sx={{ color: darkColor, fontSize: "20px" }} />
             )}
           </IconButton>
-          <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+          {/* <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem> */}
+          {loggedInUserId !== null ? (
+            <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+          ) : (
+            <MenuItem onClick={() => navigate("/login")}>Log In</MenuItem>
+          )}
         </FlexBetween>
       ) : (
         <IconButton

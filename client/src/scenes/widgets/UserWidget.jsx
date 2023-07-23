@@ -27,10 +27,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`${BASE_URL}/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await fetch(`${BASE_URL}/users/${userId}`);
     const data = await response.json();
     setUser(data);
   };
@@ -43,15 +40,7 @@ const UserWidget = ({ userId, picturePath }) => {
     return null;
   }
 
-  const {
-    firstName,
-    lastName,
-    location,
-    cameraBody,
-    cameraLens,
-    impressions,
-    friends,
-  } = user;
+  const { firstName, lastName, location, cameraBody, cameraLens } = user;
 
   return (
     <WidgetWrapper>
@@ -81,7 +70,6 @@ const UserWidget = ({ userId, picturePath }) => {
                 >
                   {firstName} {lastName}
                 </Typography>
-                <Typography color={medium}>{friends.length} friends</Typography>
               </Box>
             </FlexBetween>
             <ManageAccountsOutlined />
@@ -113,20 +101,6 @@ const UserWidget = ({ userId, picturePath }) => {
               <CameraIcon fontSize="small" sx={{ color: main }} />
               <Typography color={medium}>{cameraLens}</Typography>
             </Box>
-          </Box>
-
-          <Divider />
-
-          {/* THIRD ROW */}
-          <Box p="0.5rem 0">
-            <FlexBetween>
-              <Typography fontSize="0.6rem" color={medium}>
-                Impressions of your post
-              </Typography>
-              <Typography fontSize="0.6rem" color={main} fontWeight="500">
-                {impressions}
-              </Typography>
-            </FlexBetween>
           </Box>
 
           <Divider />
