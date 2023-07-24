@@ -8,6 +8,7 @@ import {
   CollectionsOutlined,
   Menu,
   Close,
+  ArrowBack,
 } from "@mui/icons-material";
 import {
   Box,
@@ -17,6 +18,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import BASE_URL from "../../config"; // Import the BASE_URL
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout, setLogin } from "state";
@@ -30,7 +32,7 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const isAllPath = /^\/all($|\/)/.test(window.location.pathname);
   const theme = useTheme();
   const darkColor = theme.palette.neutral.dark;
   const backgroundColor = theme.palette.background.default;
@@ -39,22 +41,55 @@ const Navbar = () => {
   return (
     <FlexBetween padding="0.5rem 2%" backgroundColor={alternativeColor}>
       <FlexBetween gap="1.75rem">
-        <Typography
-          color="primary"
-          fontWeight="bold"
-          textOverflow="ellipsis"
-          fontSize="clamp(1rem, 2rem, 2.35rem)"
-          onClick={() => navigate("/home")}
-          sx={{
-            "&:hover": {
-              color: primaryDarkColor,
-              cursor: "pointer",
-            },
-          }}
-          className="title"
-        >
-          Photogram
-        </Typography>
+        {isAllPath ? (
+          <Box>
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              textOverflow="ellipsis"
+              fontSize="clamp(0.5rem, 1.2rem, 1.7rem)"
+              onClick={() => navigate("/")}
+              sx={{
+                "&:hover": {
+                  color: primaryDarkColor,
+                  cursor: "pointer",
+                },
+              }}
+              className="title"
+            >
+              <ArrowBack
+                style={{
+                  fontSize: "clamp(0.5rem, 1.2rem, 1.7rem)",
+                  marginBottom: "-0.2rem",
+                }}
+              />
+              Back to highlights
+            </Typography>
+          </Box>
+        ) : (
+          <Typography
+            color="primary"
+            fontWeight="bold"
+            textOverflow="ellipsis"
+            fontSize="clamp(0.2rem, 0.8rem, 1.35rem)"
+            sx={{
+              "&:hover": {
+                color: primaryDarkColor,
+                cursor: "pointer",
+              },
+              display: "flex", // Use flexbox to center the items
+              alignItems: "center", // Center items along the vertical axis
+            }}
+            className="title"
+          >
+            <img
+              src={`${BASE_URL}/assets/logo.png`}
+              alt="Logo"
+              style={{ height: "50px", marginRight: "10px" }}
+            />
+            Photogram studio
+          </Typography>
+        )}
       </FlexBetween>
 
       {/* DESKTOP NAV */}
@@ -66,8 +101,7 @@ const Navbar = () => {
             ></CollectionsOutlined>
             <Typography>Gallery</Typography>
           </MenuItem>
-          <Message sx={{ fontSize: "20px" }} />
-          <Notifications sx={{ fontSize: "20px" }} />
+
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <LightMode sx={{ fontSize: "20px" }} />
@@ -114,9 +148,6 @@ const Navbar = () => {
               ></CollectionsOutlined>
               <Typography p="2rem 0rem">Gallery</Typography>
             </MenuItem>
-
-            <Message sx={{ fontSize: "20px" }} />
-            <Notifications sx={{ fontSize: "20px" }} />
 
             <IconButton
               onClick={() => dispatch(setMode())}

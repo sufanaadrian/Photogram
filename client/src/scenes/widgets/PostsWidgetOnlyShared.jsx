@@ -5,24 +5,23 @@ import { Container, Row, Col } from "react-grid-system";
 import { Pagination } from "@mui/material";
 import { getPosts, getUserPosts, getPostsAll } from "components/api";
 
-const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
+const PostsWidgetOnlyShared = ({
+  sortCriteria,
+  filterCriteria,
+  colorCriteria,
+  xl,
+}) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
-  const regex = /\/all/; // Update the regex to check for "/all" page
   const [page, setPage] = useState(1);
   let postsPerPage;
-  let isLargeGrid;
-  let isProfile;
   if (xl === 2) {
     postsPerPage = 12;
-    isLargeGrid = false;
   } else {
     postsPerPage = 1000;
-    isLargeGrid = true;
   }
-  if (regex.test(window.location.pathname)) isProfile = true;
-  else isProfile = false;
+
   function hexToRgb(hex) {
     const hexCode = hex.replace("#", "");
     const r = parseInt(hexCode.substr(0, 2), 16);
@@ -53,11 +52,7 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
     : null;
 
   useEffect(() => {
-    if (regex.test(window.location.pathname)) {
-      getPostsAll(dispatch);
-    } else {
-      getPosts(dispatch);
-    }
+    getPosts(dispatch);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const sortedPostsFeed = Array.isArray(posts)
     ? [...posts].sort((a, b) => {
@@ -145,115 +140,51 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
     page * postsPerPage
   );
 
-  return regex.test(window.location.pathname) ? (
-    <Container>
-      <Row gutterWidth={isLargeGrid ? 0 : undefined} style={{ width: "100%" }}>
-        {paginatedPosts.map(
-          ({
-            _id,
-            userId,
-            firstName,
-            lastName,
-            description,
-            cameraBody,
-            cameraLens,
-            location,
-            picturePath,
-            userPicturePath,
-            likes,
-            isSharable,
-            comments,
-            exifData,
-            dominantColors,
-            filterCriteria,
-          }) => (
-            <Col
-              key={_id}
-              xs={xl === 2 ? 12 : 3}
-              sm={xl === 2 ? 6 : 3}
-              md={xl === 2 ? 3 : 2}
-              lg={xl === 2 ? 3 : xl}
-              xl={xl === 2 ? xl : 0.8}
-            >
-              <PostWidget
-                postId={_id}
-                postUserId={userId}
-                name={`${firstName} ${lastName}`}
-                description={description}
-                cameraBody={cameraBody}
-                cameraLens={cameraLens}
-                location={location}
-                picturePath={picturePath}
-                userPicturePath={userPicturePath}
-                likes={likes}
-                isSharable={isSharable}
-                comments={comments}
-                exifData={exifData}
-                isLargeGrid={isLargeGrid}
-                isProfile={isProfile}
-                dominantColors={dominantColors}
-              />
-            </Col>
-          )
-        )}
-      </Row>
-      {xl === 2 && (
-        <Row justify="center" style={{ margin: "1rem" }}>
-          <Pagination
-            count={Math.ceil(posts.length / postsPerPage)}
-            page={page}
-            onChange={(event, newPage) => {
-              setPage(newPage);
-              window.scrollTo(0, 0);
-            }}
-            style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}
-          />
+  return (
+    <>
+      <Container>
+        <Row style={{ width: "100%" }}>
+          {sortedPostsFeed.map(
+            ({
+              _id,
+              userId,
+              firstName,
+              lastName,
+              description,
+              cameraBody,
+              cameraLens,
+              location,
+              picturePath,
+              userPicturePath,
+              likes,
+              isSharable,
+              comments,
+              exifData,
+              dominantColors,
+            }) => (
+              <Col key={_id} xs={12} sm={6} md={6} lg={5} xl={4}>
+                <PostWidget
+                  postId={_id}
+                  postUserId={userId}
+                  name={`${firstName} ${lastName}`}
+                  description={description}
+                  cameraBody={cameraBody}
+                  cameraLens={cameraLens}
+                  location={location}
+                  picturePath={picturePath}
+                  userPicturePath={userPicturePath}
+                  likes={likes}
+                  isSharable={isSharable}
+                  comments={comments}
+                  exifData={exifData}
+                  dominantColors={dominantColors}
+                />
+              </Col>
+            )
+          )}
         </Row>
-      )}
-    </Container>
-  ) : (
-    <Container>
-      <Row style={{ width: "100%" }}>
-        {sortedPostsFeed.map(
-          ({
-            _id,
-            userId,
-            firstName,
-            lastName,
-            description,
-            cameraBody,
-            cameraLens,
-            location,
-            picturePath,
-            userPicturePath,
-            likes,
-            isSharable,
-            comments,
-            exifData,
-            dominantColors,
-          }) => (
-            <Col key={_id} xs={12} sm={6} md={6} lg={5} xl={4}>
-              <PostWidget
-                postId={_id}
-                postUserId={userId}
-                name={`${firstName} ${lastName}`}
-                description={description}
-                cameraBody={cameraBody}
-                cameraLens={cameraLens}
-                location={location}
-                picturePath={picturePath}
-                userPicturePath={userPicturePath}
-                likes={likes}
-                isSharable={isSharable}
-                comments={comments}
-                exifData={exifData}
-                dominantColors={dominantColors}
-              />
-            </Col>
-          )
-        )}
-      </Row>
-    </Container>
+      </Container>
+    </>
   );
 };
-export default PostsWidget;
+export default PostsWidgetOnlyShared;

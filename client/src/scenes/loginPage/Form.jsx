@@ -92,7 +92,7 @@ const Form = () => {
           token: loggedIn.token,
         })
       );
-      navigate("/home");
+      navigate("/all");
     }
   };
 
@@ -118,6 +118,23 @@ const Form = () => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          {isRegister && (
+            <Box
+              sx={{
+                textAlign: "center",
+                backgroundColor: "#f1f1f1",
+                padding: "10px",
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: "bold", color: "#FF0000" }}
+              >
+                Account registration is disabled temporarily.
+              </Typography>
+            </Box>
+          )}
+
           <Box
             display="grid"
             gap="30px"
@@ -128,7 +145,7 @@ const Form = () => {
           >
             {isRegister && (
               <>
-                <TextField
+                {/* <TextField
                   label="First Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -216,31 +233,35 @@ const Form = () => {
                       </Box>
                     )}
                   </Dropzone>
-                </Box>
+                </Box> */}
               </>
             )}
-
-            <TextField
-              label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.password}
-              name="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-              sx={{ gridColumn: "span 4" }}
-            />
+            {isLogin && (
+              <>
+                {" "}
+                <TextField
+                  label="Email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                  error={Boolean(touched.email) && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  sx={{ gridColumn: "span 4" }}
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.password}
+                  name="password"
+                  error={Boolean(touched.password) && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                  sx={{ gridColumn: "span 4" }}
+                />
+              </>
+            )}
           </Box>
 
           {/* BUTTONS */}
@@ -256,7 +277,8 @@ const Form = () => {
                 "&:hover": { color: palette.primary.main },
               }}
             >
-              {isLogin ? "LOGIN" : "REGISTER"}
+              {isLogin && "LOGIN"}
+              {/* : "REGISTER"} */}
             </Button>
             <Typography
               onClick={() => {
@@ -274,7 +296,7 @@ const Form = () => {
             >
               {isLogin
                 ? "Don't have an account? Sign Up here."
-                : "Already have an account? Login here."}
+                : "Go back to login."}
             </Typography>
           </Box>
         </form>

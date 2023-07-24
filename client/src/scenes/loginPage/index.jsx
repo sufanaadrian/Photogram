@@ -76,7 +76,7 @@ const LoginPage = () => {
           backgroundColor={theme.palette.background.alt}
         >
           <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-            Welcome to Photogram, the place where all photographers meet!
+            Welcome to Photogram!
           </Typography>
           <Form />
         </Box>
