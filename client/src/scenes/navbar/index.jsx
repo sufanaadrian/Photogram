@@ -83,11 +83,14 @@ const Navbar = () => {
             className="title"
           >
             <img
-              src={`${BASE_URL}/assets/logo.png`}
+              src={`${BASE_URL}/assets/logo_byMe.png`}
               alt="Logo"
-              style={{ height: "50px", marginRight: "10px" }}
+              style={{
+                height: "50px",
+                marginRight: "10px",
+                marginLeft: "10px",
+              }}
             />
-            Photogram studio
           </Typography>
         )}
       </FlexBetween>

@@ -25,7 +25,7 @@ const HomePage = () => {
           flexBasis={isNonMobileScreens ? "70%" : "50%"}
           width={isNonMobileScreens ? undefined : "100%"}
           ml={isNonMobileScreens ? undefined : "1rem"}
-          mt={isNonMobileScreens ? undefined : "2rem"}
+          mt={isNonMobileScreens ? undefined : "0rem"}
         >
           <PostsWidgetOnlyShared />
         </Box>

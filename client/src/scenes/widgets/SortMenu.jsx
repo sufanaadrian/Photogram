@@ -56,10 +56,10 @@ const SortMenu = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (isSortMenuVisible || isFilterMenuVisible) {
-        setIsSortMenuVisible(false);
-        setIsFilterSortMenuVisible(false);
-      }
+      // if (isSortMenuVisible || isFilterMenuVisible) {
+      //   setIsSortMenuVisible(false);
+      //   setIsFilterSortMenuVisible(false);
+      // }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -108,7 +108,6 @@ const SortMenu = ({
   };
   const setFilterCriteriaClick = (filterCriteria) => {
     onFilterCriteriaChange(filterCriteria);
-    setIsFilterSortMenuVisible(!isFilterMenuVisible);
   };
   const setColorPickerValue = (filterCriteria) => {
     onColorCriteriaChange(filterCriteria);
