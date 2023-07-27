@@ -3,10 +3,15 @@ import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
+import { useState } from "react";
+import SortMenu from "scenes/widgets/SortMenu";
 import PostsWidgetOnlyShared from "scenes/widgets/PostsWidgetOnlyShared"; // Import the PostsWidgetSharedOnly component
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
+  const [sortCriteria, setSortCriteria] = useState("all");
+  const [filterCriteria, setFilterCriteria] = useState("all");
+  const [colorCriteria, setColorCriteria] = useState("all");
+  const [xl, setXl] = useState(1);
   return (
     <Box>
       <Navbar />
@@ -27,7 +32,18 @@ const HomePage = () => {
           ml={isNonMobileScreens ? undefined : "1rem"}
           mt={isNonMobileScreens ? undefined : "0rem"}
         >
-          <PostsWidgetOnlyShared />
+          <SortMenu
+            onSortCriteriaChange={setSortCriteria}
+            onFilterCriteriaChange={setFilterCriteria}
+            onColorCriteriaChange={setColorCriteria}
+            onXLChange={setXl}
+          />
+          <PostsWidgetOnlyShared
+            sortCriteria={sortCriteria}
+            filterCriteria={filterCriteria}
+            colorCriteria={colorCriteria}
+            xl={xl}
+          />
         </Box>
       </Box>
     </Box>

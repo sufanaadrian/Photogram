@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-pascal-case */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PostWidget from "./PostWidget";
+import PostWidget_Highlights from "./PostWidget_Highlights";
 import { Container, Row, Col } from "react-grid-system";
 import { Pagination } from "@mui/material";
 import { getPosts, getUserPosts, getPostsAll } from "components/api";
@@ -16,10 +17,14 @@ const PostsWidgetOnlyShared = ({
   const token = useSelector((state) => state.token);
   const [page, setPage] = useState(1);
   let postsPerPage;
+  let isLargeGrid;
+
   if (xl === 2) {
     postsPerPage = 12;
+    isLargeGrid = false;
   } else {
     postsPerPage = 1000;
+    isLargeGrid = true;
   }
 
   function hexToRgb(hex) {
@@ -144,7 +149,7 @@ const PostsWidgetOnlyShared = ({
     <>
       <Container>
         <Row style={{ width: "100%" }}>
-          {sortedPostsFeed.map(
+          {filteredAndSortedPosts.map(
             ({
               _id,
               userId,
@@ -162,8 +167,15 @@ const PostsWidgetOnlyShared = ({
               exifData,
               dominantColors,
             }) => (
-              <Col key={_id} xs={12} sm={6} md={6} lg={5} xl={4}>
-                <PostWidget
+              <Col
+                key={_id}
+                xs={xl === 2 ? 12 : 6}
+                sm={xl === 2 ? 6 : 6}
+                md={xl === 2 ? 6 : 6}
+                lg={xl === 2 ? 5 : 6}
+                xl={xl === 2 ? 4 : 6}
+              >
+                <PostWidget_Highlights
                   postId={_id}
                   postUserId={userId}
                   name={`${firstName} ${lastName}`}
@@ -177,6 +189,7 @@ const PostsWidgetOnlyShared = ({
                   isSharable={isSharable}
                   comments={comments}
                   exifData={exifData}
+                  isLargeGrid={isLargeGrid}
                   dominantColors={dominantColors}
                 />
               </Col>

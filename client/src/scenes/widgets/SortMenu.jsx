@@ -53,6 +53,7 @@ const SortMenu = ({
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [xl, setXl] = useState(1);
   const isNonMobile = useMediaQuery("(min-width:1000px)");
+  const regex = /\/all/;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -264,42 +265,48 @@ const SortMenu = ({
                 Filter by:
               </ListItemText>
             </ListItem>
-            <ListItem
-              onClick={() => setFilterCriteriaClick("showAll")}
-              sx={{
-                "&:hover": {
-                  transition: "all 0.3s",
-                  backgroundColor: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <ListItemText>Show all </ListItemText>
-            </ListItem>
-            <ListItem
-              onClick={() => setFilterCriteriaClick("isOnFeed")}
-              sx={{
-                "&:hover": {
-                  transition: "all 0.3s",
-                  backgroundColor: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <ListItemText>Is on feed </ListItemText>
-            </ListItem>
-            <ListItem
-              onClick={() => setFilterCriteriaClick("isSharableCheck")}
-              sx={{
-                "&:hover": {
-                  transition: "all 0.3s",
-                  cursor: "pointer",
-                  backgroundColor: palette.primary.light,
-                },
-              }}
-            >
-              <ListItemText>Location </ListItemText>
-            </ListItem>
+            {regex.test(window.location.pathname) && (
+              <>
+                {" "}
+                <ListItem
+                  onClick={() => setFilterCriteriaClick("showAll")}
+                  sx={{
+                    "&:hover": {
+                      transition: "all 0.3s",
+                      backgroundColor: palette.primary.light,
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <ListItemText>Show all </ListItemText>
+                </ListItem>
+                <ListItem
+                  onClick={() => setFilterCriteriaClick("isOnFeed")}
+                  sx={{
+                    "&:hover": {
+                      transition: "all 0.3s",
+                      backgroundColor: palette.primary.light,
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <ListItemText>Is on feed </ListItemText>
+                </ListItem>
+                {/* <ListItem
+                  onClick={() => setFilterCriteriaClick("isSharableCheck")}
+                  sx={{
+                    "&:hover": {
+                      transition: "all 0.3s",
+                      cursor: "pointer",
+                      backgroundColor: palette.primary.light,
+                    },
+                  }}
+                >
+                  <ListItemText>Location </ListItemText>
+                </ListItem> */}
+              </>
+            )}
+
             <ListItem>
               <TextField
                 label="ISO Ex: 100"
@@ -407,17 +414,20 @@ const SortMenu = ({
       >
         <GridViewOutlined />
       </IconButton>
-      <IconButton
-        style={{
-          position: "absolute",
-          right: 40,
-          margin: isNonMobile ? "0 3rem 0 0" : "0 1rem 0 0",
-        }}
-        onClick={handleConfirmClick}
-        color={palette.primary.medium}
-      >
-        <PictureAsPdfOutlined />
-      </IconButton>
+      {regex.test(window.location.pathname) && (
+        <IconButton
+          style={{
+            position: "absolute",
+            right: 40,
+            margin: isNonMobile ? "0 3rem 0 0" : "0 1rem 0 0",
+          }}
+          onClick={handleConfirmClick}
+          color={palette.primary.medium}
+        >
+          <PictureAsPdfOutlined />
+        </IconButton>
+      )}
+
       <IconButton
         style={{
           position: "fixed",

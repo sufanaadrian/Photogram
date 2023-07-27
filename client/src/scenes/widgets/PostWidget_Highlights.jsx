@@ -33,7 +33,7 @@ import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
 import { getUserPosts } from "components/api";
 import BASE_URL from "../../config";
-const PostWidget = ({
+const PostWidget_Highlights = ({
   postId,
   postUserId,
   name,
@@ -188,7 +188,7 @@ const PostWidget = ({
 
   return (
     <WidgetWrapper
-      m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0rem  0.1rem 0rem 0.1rem"}
+      m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0.1rem 0 0.1rem 0"}
       tag="gallery"
       onMouseEnter={() => setShowIconButton(true)}
       onMouseLeave={() => {
@@ -201,18 +201,20 @@ const PostWidget = ({
         friendId={postUserId}
         name={name}
         subtitle={
-          <>
-            Shot on: {exifDataObject.Make} {exifDataObject.Model}
-            <div style={{ lineHeight: "0.5", whiteSpace: "pre" }}>
-              {"\n"}Lens:{" "}
-              {exifDataObject.Make === "Canon"
-                ? " EF" +
-                  exifDataObject.FocalLength +
-                  "mm f/" +
-                  exifDataObject.FNumber
-                : exifDataObject.undefined}
-            </div>
-          </>
+          (!isLargeGrid || isNonMobileScreens) && (
+            <>
+              Shot on: {exifDataObject.Make} {exifDataObject.Model}
+              <div style={{ lineHeight: "0.5", whiteSpace: "pre" }}>
+                {"\n"}Lens:{" "}
+                {exifDataObject.Make === "Canon"
+                  ? " EF" +
+                    exifDataObject.FocalLength +
+                    "mm f/" +
+                    exifDataObject.FNumber
+                  : exifDataObject.undefined}
+              </div>
+            </>
+          )
         }
         userPicturePath={userPicturePath}
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
@@ -226,19 +228,7 @@ const PostWidget = ({
           <img
             className="post-image"
             width={isFullScreen ? originalWidth : "100%"}
-            height={
-              isNonMobileScreens
-                ? isFullScreen
-                  ? originalHeight
-                  : !isLargeGrid
-                  ? "350px"
-                  : "150px"
-                : isFullScreen
-                ? originalHeight
-                : !isLargeGrid
-                ? "auto"
-                : "150px"
-            }
+            height={isFullScreen ? originalHeight : "auto"}
             alt="post"
             loading="lazy"
             style={{
@@ -418,21 +408,18 @@ const PostWidget = ({
             </div>
           )}
         </div>
-        {!isLargeGrid && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              borderRadius: !isLargeGrid ? "0.75rem" : "0",
-              height: "45%",
-              background:
-                "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))",
-            }}
-          />
-        )}
-
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            borderRadius: !isLargeGrid ? "0.75rem" : "0",
+            height: "45%",
+            background:
+              "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))",
+          }}
+        />
         {isSharable === true && (
           <Typography
             style={{ position: "absolute", top: 0, right: 3, color: "white" }}
@@ -756,4 +743,4 @@ const PostWidget = ({
   );
 };
 
-export default PostWidget;
+export default PostWidget_Highlights;

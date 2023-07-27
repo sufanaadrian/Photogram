@@ -4,10 +4,13 @@ import {
   LocationOnOutlined,
   ArrowDropDownOutlined,
   ArrowDropUpOutlined,
+  Facebook,
+  Instagram,
+  CompressOutlined,
 } from "@mui/icons-material";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import CameraIcon from "@mui/icons-material/Camera";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme, Link } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -18,6 +21,7 @@ import BASE_URL from "../../config";
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
+  const loggedInUserId = useSelector((state) => state.user?._id ?? null);
 
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -72,7 +76,7 @@ const UserWidget = ({ userId, picturePath }) => {
                 </Typography>
               </Box>
             </FlexBetween>
-            <ManageAccountsOutlined />
+            {loggedInUserId && <ManageAccountsOutlined />}
           </FlexBetween>
 
           <Divider />
@@ -115,30 +119,46 @@ const UserWidget = ({ userId, picturePath }) => {
             >
               Social Profiles
             </Typography>
-
             <FlexBetween gap="0.5rem">
               <FlexBetween gap="1rem">
-                <img src="../assets/linkedin.png" alt="linkedin" />
+                <Instagram fontSize="large" sx={{ color: main }} />
                 <Box>
-                  <Typography color={main} fontWeight="500">
-                    Linkedin
-                  </Typography>
-                  <Typography color={medium}>Network Platform</Typography>
+                  <Typography fontSize={"smaller"} color={medium}>
+                    Instagram
+                  </Typography>{" "}
+                  <a
+                    href="https://www.instagram.com/sufana.adi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Typography color={main} fontWeight="500">
+                      @sufana.adi
+                    </Typography>
+                  </a>
                 </Box>
               </FlexBetween>
-              <EditOutlined sx={{ color: main }} />
+              {loggedInUserId && <EditOutlined sx={{ color: main }} />}
             </FlexBetween>
-            <FlexBetween gap="0.5rem">
+            <FlexBetween gap="0.5rem" sx={{ marginTop: "10px" }}>
               <FlexBetween gap="1rem">
-                <img src="../assets/linkedin.png" alt="linkedin" />
+                <Facebook fontSize="large" sx={{ color: main }} />
+
                 <Box>
-                  <Typography color={main} fontWeight="500">
-                    Linkedin
+                  <Typography fontSize={"smaller"} color={medium}>
+                    Facebook
                   </Typography>
-                  <Typography color={medium}>Network Platform</Typography>
+                  <a
+                    href="https://www.facebook.com/sufana.adi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Typography color={main} fontWeight="500">
+                      @sufana.adi
+                    </Typography>
+                  </a>
                 </Box>
               </FlexBetween>
-              <EditOutlined sx={{ color: main }} />
+              {loggedInUserId && <EditOutlined sx={{ color: main }} />}
             </FlexBetween>
           </Box>
         </div>

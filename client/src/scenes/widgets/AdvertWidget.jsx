@@ -60,13 +60,13 @@ const AdvertWidget = () => {
               marginBottom: "1rem",
             }}
           />
-          <Typography color="textSecondary" mb={2}>
+          <Typography color="textSecondary" mb={1}>
             Welcome to my gallery.
           </Typography>
-          <Typography color="textSecondary" mb={2}>
+          <Typography color="textSecondary" mb={1}>
             Discover new places, experiences, and moments through my lens.
           </Typography>
-          <Typography color="textSecondary" mb={2}>
+          <Typography color="textSecondary" mb={1}>
             If you like any of my work, feel free to get in touch.
           </Typography>
           <Box sx={{ display: "flex", gap: "1rem", alignItems: "flex-end" }}>
@@ -97,8 +97,7 @@ const AdvertWidget = () => {
             </Box>
             <Box flex={1}>
               <Typography color="textSecondary" mb={2}>
-                The full gallery is available in the Gallery page. Check it out
-                by pressing the button below.
+                The full gallery is available in the Gallery page.
               </Typography>
               <Button
                 variant="contained"

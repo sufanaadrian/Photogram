@@ -7,11 +7,13 @@ import {
 } from "@mui/material";
 import Form from "./Form";
 import { useState, useEffect } from "react";
-
+import { ArrowLeftOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const theme = useTheme();
   const [showContent, setShowContent] = useState(false);
   const isNonMobile = useMediaQuery("(min-width:1000px)");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,18 +69,29 @@ const LoginPage = () => {
           </Button>
         </Box>
       </div>
-      <Box display="flex" flexWrap="wrap" justifyContent="center">
-        <Box
-          id="login-form"
-          width={isNonMobile ? "30%" : "100%"}
-          p="2rem"
-          m="2rem 0"
-          backgroundColor={theme.palette.background.alt}
+      <Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/all")}
+          zIndex="1"
         >
-          <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-            Welcome to Photogram!
-          </Typography>
-          <Form />
+          Go back <ArrowLeftOutlined sx={{ marginLeft: "0.5rem" }} />
+        </Button>
+
+        <Box display="flex" flexWrap="wrap" justifyContent="center">
+          <Box
+            id="login-form"
+            width={isNonMobile ? "30%" : "100%"}
+            p="2rem"
+            m="2rem 0"
+            backgroundColor={theme.palette.background.alt}
+          >
+            <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
+              Welcome to Photogram!
+            </Typography>
+            <Form />
+          </Box>
         </Box>
       </Box>
     </div>
