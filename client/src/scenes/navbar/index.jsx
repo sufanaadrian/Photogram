@@ -108,7 +108,7 @@ const Navbar = () => {
           </MenuItem>
           <MenuItem value="Contact" onClick={() => navigate(`/contact`)}>
             <Email sx={{ fontSize: "35px" }}></Email>
-            <Typography p="2rem 0rem">Contact</Typography>
+            <Typography>Contact</Typography>
           </MenuItem>
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
