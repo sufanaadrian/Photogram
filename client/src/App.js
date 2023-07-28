@@ -10,7 +10,16 @@ import { themeSettings } from "./theme";
 
 function App() {
   const mode = useSelector((state) => state.mode);
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  const theme = useMemo(() => {
+    // If mode is explicitly set to "dark", use the dark themeSettings
+    if (mode === "light") {
+      return createTheme(themeSettings("dark"));
+    } else {
+      // Otherwise, use the light themeSettings (fallback for other modes)
+      return createTheme(themeSettings("light"));
+    }
+  }, [mode]);
   const isAuth = Boolean(useSelector((state) => state.token));
 
   return (

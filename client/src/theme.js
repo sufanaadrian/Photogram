@@ -35,29 +35,8 @@ export const themeSettings = (mode) => {
   return {
     palette: {
       mode: mode,
-      ...(mode === "dark"
+      ...(mode === "light"
         ? {
-            // palette values for dark mode
-            primary: {
-              dark: colorValues.primary[200],
-              main: colorValues.primary[500],
-              light: colorValues.primary[800],
-            },
-            neutral: {
-              dark: colorValues.grey[100],
-              main: colorValues.grey[200],
-              mediumMain: colorValues.grey[300],
-              medium: colorValues.grey[400],
-              light: colorValues.grey[700],
-            },
-            background: {
-              default: colorValues.grey[900],
-              default_close: colorValues.grey[850],
-
-              alt: colorValues.grey[800],
-            },
-          }
-        : {
             // palette values for light mode
             primary: {
               dark: colorValues.primary[700],
@@ -76,6 +55,27 @@ export const themeSettings = (mode) => {
               default_close: colorValues.grey[0],
 
               alt: colorValues.grey[0],
+            },
+          }
+        : {
+            // palette values for dark mode
+            primary: {
+              dark: colorValues.primary[200],
+              main: colorValues.primary[500],
+              light: colorValues.primary[800],
+            },
+            neutral: {
+              dark: colorValues.grey[100],
+              main: colorValues.grey[200],
+              mediumMain: colorValues.grey[300],
+              medium: colorValues.grey[400],
+              light: colorValues.grey[700],
+            },
+            background: {
+              default: colorValues.grey[900],
+              default_close: colorValues.grey[850],
+
+              alt: colorValues.grey[800],
             },
           }),
     },

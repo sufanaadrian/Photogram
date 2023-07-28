@@ -201,7 +201,7 @@ const PostWidget_Highlights = ({
         friendId={postUserId}
         name={name}
         subtitle={
-          (!isLargeGrid || isNonMobileScreens) && (
+          (isLargeGrid || isNonMobileScreens) && (
             <>
               Shot on: {exifDataObject.Make} {exifDataObject.Model}
               <div style={{ lineHeight: "0.5", whiteSpace: "pre" }}>
@@ -232,13 +232,13 @@ const PostWidget_Highlights = ({
             alt="post"
             loading="lazy"
             style={{
-              borderRadius: !isLargeGrid ? "0.75rem" : "0",
+              borderRadius: isLargeGrid ? "0.75rem" : "0.75rem",
               opacity: showExifData ? "0.1" : "1",
               zIndex: 1,
             }}
             src={`${BASE_URL}/assets/${picturePath}`}
           />
-          {isFullScreen && isLargeGrid && (
+          {/* {isFullScreen && !isLargeGrid && (
             <div>
               <Typography
                 style={{
@@ -406,7 +406,7 @@ const PostWidget_Highlights = ({
                 </FlexBetween>
               </FlexBetween>
             </div>
-          )}
+          )} */}
         </div>
         <div
           style={{
@@ -431,7 +431,7 @@ const PostWidget_Highlights = ({
             On feed
           </Typography>
         )}
-        {showExifData && !isLargeGrid && (
+        {showExifData /*&& isLargeGrid*/ && (
           <List
             className="scrollbar"
             style={{
@@ -464,14 +464,14 @@ const PostWidget_Highlights = ({
                       >
                         <div
                           style={{
-                            width: isLargeGrid
+                            width: !isLargeGrid
                               ? !isNonMobileScreens
                                 ? "50px"
                                 : "30px"
                               : !isNonMobileScreens
                               ? "50px"
                               : "30px",
-                            height: isLargeGrid
+                            height: !isLargeGrid
                               ? !isNonMobileScreens
                                 ? "50px"
                                 : "30px"
@@ -484,14 +484,14 @@ const PostWidget_Highlights = ({
                         <span
                           style={{
                             marginLeft: "10px",
-                            fontWeight: isLargeGrid
+                            fontWeight: !isLargeGrid
                               ? !isNonMobileScreens
                                 ? "bold"
                                 : "undefined"
                               : !isNonMobileScreens
                               ? "bold"
                               : "undefine",
-                            fontSize: isLargeGrid
+                            fontSize: !isLargeGrid
                               ? !isNonMobileScreens
                                 ? "0.8rem"
                                 : "0.5rem"
@@ -561,7 +561,7 @@ const PostWidget_Highlights = ({
             </ListItem>
           </List>
         )}
-        {!isLargeGrid && (
+        {isLargeGrid && (
           <Box>
             <Typography
               style={{
@@ -620,17 +620,19 @@ const PostWidget_Highlights = ({
             marginBottom: "0.2rem",
           }}
         >
-          {showIconButton && isLargeGrid && (
+          {/* {showIconButton && !isLargeGrid && (
             <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
               <MoreVert />
             </IconButton>
           )}
-          {!isLargeGrid && (
+          {isLargeGrid && (
             <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
               <MoreVert />
             </IconButton>
-          )}
-
+          )} */}
+          <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
+            <MoreVert />
+          </IconButton>
           <Popper
             anchorEl={anchorEl}
             open={isMenuVisible}
@@ -661,14 +663,14 @@ const PostWidget_Highlights = ({
                     <ListItemText>Remove from feed</ListItemText>
                   </ListItem>
                 )}
-                {!isLargeGrid && (
-                  <ListItem onClick={handleDetailsClick}>
-                    <ListItemIcon>
-                      <InfoOutlined fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Details</ListItemText>
-                  </ListItem>
-                )}
+                {/* {isLargeGrid && ( */}
+                <ListItem onClick={handleDetailsClick}>
+                  <ListItemIcon>
+                    <InfoOutlined fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Details</ListItemText>
+                </ListItem>
+                {/* )} */}
                 <ListItem onClick={handleSaveClick}>
                   <ListItemIcon>
                     <FileDownloadOutlined fontSize="small" />

@@ -26,7 +26,6 @@ const PostsWidgetOnlyShared = ({
     postsPerPage = 1000;
     isLargeGrid = true;
   }
-
   function hexToRgb(hex) {
     const hexCode = hex.replace("#", "");
     const r = parseInt(hexCode.substr(0, 2), 16);
@@ -169,11 +168,11 @@ const PostsWidgetOnlyShared = ({
             }) => (
               <Col
                 key={_id}
-                xs={xl === 2 ? 12 : 6}
-                sm={xl === 2 ? 6 : 6}
-                md={xl === 2 ? 6 : 6}
-                lg={xl === 2 ? 5 : 6}
-                xl={xl === 2 ? 4 : 6}
+                xs={xl !== 2 ? 12 : 6}
+                sm={xl !== 2 ? 6 : 6}
+                md={xl !== 2 ? 6 : 6}
+                lg={xl !== 2 ? 5 : 6}
+                xl={xl !== 2 ? 4 : 6}
               >
                 <PostWidget_Highlights
                   postId={_id}
