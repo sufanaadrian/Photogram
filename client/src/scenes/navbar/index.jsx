@@ -6,6 +6,7 @@ import {
   LightMode,
   Notifications,
   CollectionsOutlined,
+  Email,
   Menu,
   Close,
   ArrowBack,
@@ -17,6 +18,7 @@ import {
   MenuItem,
   useTheme,
   useMediaQuery,
+  Divider,
 } from "@mui/material";
 import BASE_URL from "../../config"; // Import the BASE_URL
 
@@ -83,7 +85,7 @@ const Navbar = () => {
             className="title"
           >
             <img
-              src={`${BASE_URL}/assets/logo_byMe.png`}
+              src={`${BASE_URL}/assets/logo_latest.png`}
               alt="Logo"
               style={{
                 height: "50px",
@@ -104,7 +106,10 @@ const Navbar = () => {
             ></CollectionsOutlined>
             <Typography>Gallery</Typography>
           </MenuItem>
-
+          <MenuItem value="Contact" onClick={() => navigate(`/contact`)}>
+            <Email sx={{ fontSize: "35px" }}></Email>
+            <Typography p="2rem 0rem">Contact</Typography>
+          </MenuItem>
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <LightMode sx={{ fontSize: "20px" }} />
@@ -140,18 +145,17 @@ const Navbar = () => {
           backgroundColor={backgroundColor}
         >
           {/* MENU ITEMS */}
-          <FlexBetween
-            flexDirection="column"
-            justifyContent="center"
-            gap="2rem"
-          >
+          <FlexBetween flexDirection="column" justifyContent="center">
             <MenuItem value="Gallery" onClick={() => navigate(`/all`)}>
               <CollectionsOutlined
                 sx={{ fontSize: "35px" }}
               ></CollectionsOutlined>
               <Typography p="2rem 0rem">Gallery</Typography>
             </MenuItem>
-
+            <MenuItem value="Contact" onClick={() => navigate(`/contact`)}>
+              <Email sx={{ fontSize: "35px" }}></Email>
+              <Typography p="2rem 0rem">Contact</Typography>
+            </MenuItem>
             <IconButton
               onClick={() => dispatch(setMode())}
               sx={{ fontSize: "20px" }}
@@ -162,38 +166,44 @@ const Navbar = () => {
                 <DarkMode sx={{ color: darkColor, fontSize: "20px" }} />
               )}
             </IconButton>
-
-            {loggedInUserId !== null ? (
-              <Typography
-                onClick={() => dispatch(setLogout())}
-                fontSize="15px"
-                fontWeight="bold"
-                sx={{
-                  "&:hover": {
-                    cursor: "pointer",
-                    transition: "all 0.3s",
-                    transform: "scale(1.1) ",
-                  },
-                }}
-              >
-                Log Out
-              </Typography>
-            ) : (
-              <Typography
-                onClick={() => navigate("/login")}
-                fontSize="15px"
-                fontWeight="bold"
-                sx={{
-                  "&:hover": {
-                    cursor: "pointer",
-                    transition: "all 0.3s",
-                    transform: "scale(1.1) ",
-                  },
-                }}
-              >
-                Log In
-              </Typography>
-            )}
+            <Box
+              marginTop="1rem"
+              border="1px solid"
+              borderRadius="12%"
+              padding="1rem"
+            >
+              {loggedInUserId !== null ? (
+                <Typography
+                  onClick={() => dispatch(setLogout())}
+                  fontSize="15px"
+                  fontWeight="bold"
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      transition: "all 0.3s",
+                      transform: "scale(1.1) ",
+                    },
+                  }}
+                >
+                  Log Out
+                </Typography>
+              ) : (
+                <Typography
+                  onClick={() => navigate("/login")}
+                  fontSize="15px"
+                  fontWeight="bold"
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      transition: "all 0.3s",
+                      transform: "scale(1.1) ",
+                    },
+                  }}
+                >
+                  Log In
+                </Typography>
+              )}
+            </Box>
           </FlexBetween>
           {/* CLOSE ICON */}
           <Box position="fixed" bottom="0" p="0rem 1.5rem">

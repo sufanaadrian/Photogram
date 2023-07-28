@@ -52,7 +52,7 @@ const AdvertWidget = () => {
             Hello!
           </Typography>
           <img
-            src={`${BASE_URL}/assets/logo_byMe.png`}
+            src={`${BASE_URL}/assets/logo_latest.png`}
             alt="Gallery Advert"
             style={{
               width: "100%",

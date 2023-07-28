@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
+import ContactPage from "scenes/contactPage";
 import ProfilePage from "scenes/profilePage";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -35,6 +36,7 @@ function App() {
             />
             <Route path="/all" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

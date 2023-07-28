@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  Divider,
 } from "@mui/material";
 import { useTheme } from "@mui/material";
 import {
@@ -265,21 +266,22 @@ const SortMenu = ({
                 Filter by:
               </ListItemText>
             </ListItem>
+            <ListItem
+              onClick={() => setFilterCriteriaClick("showAll")}
+              sx={{
+                "&:hover": {
+                  transition: "all 0.3s",
+                  backgroundColor: palette.primary.light,
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <ListItemText>Show all </ListItemText>
+            </ListItem>
+            {!regex.test(window.location.pathname) && <Divider />}
             {regex.test(window.location.pathname) && (
               <>
                 {" "}
-                <ListItem
-                  onClick={() => setFilterCriteriaClick("showAll")}
-                  sx={{
-                    "&:hover": {
-                      transition: "all 0.3s",
-                      backgroundColor: palette.primary.light,
-                      cursor: "pointer",
-                    },
-                  }}
-                >
-                  <ListItemText>Show all </ListItemText>
-                </ListItem>
                 <ListItem
                   onClick={() => setFilterCriteriaClick("isOnFeed")}
                   sx={{
@@ -306,7 +308,6 @@ const SortMenu = ({
                 </ListItem> */}
               </>
             )}
-
             <ListItem>
               <TextField
                 label="ISO Ex: 100"

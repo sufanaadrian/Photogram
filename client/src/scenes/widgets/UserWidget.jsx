@@ -85,8 +85,20 @@ const UserWidget = ({ userId, picturePath }) => {
           <Box p="1rem 0">
             <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
               <LocationOnOutlined fontSize="small" sx={{ color: main }} />
-              <Typography color={medium}>{location}</Typography>
+              <Typography color={medium}>{location}, Romania</Typography>
             </Box>
+          </Box>
+
+          <Divider />
+          <Box p="0.5rem 0">
+            <Typography
+              fontSize="0.8rem"
+              color={main}
+              fontWeight="500"
+              mb="0.3rem"
+            >
+              Gear
+            </Typography>
             <Box
               display="flex"
               alignItems="center"
@@ -106,7 +118,6 @@ const UserWidget = ({ userId, picturePath }) => {
               <Typography color={medium}>{cameraLens}</Typography>
             </Box>
           </Box>
-
           <Divider />
 
           {/* FOURTH ROW */}

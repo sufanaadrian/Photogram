@@ -18,7 +18,7 @@ const LoginPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowContent(true);
-    }, 6010);
+    }, 10);
 
     return () => clearTimeout(timer);
   }, []);
