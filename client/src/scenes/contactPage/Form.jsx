@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import {
   Box,
   Button,
@@ -6,129 +7,125 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
-import Dropzone from "react-dropzone";
-import FlexBetween from "components/FlexBetween";
-import BASE_URL from "../../config.js";
-import { EditOutlined } from "@mui/icons-material";
-const contactSchema = yup.object().shape({
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  message: yup.string().required("Message is required"),
-});
-
-const initialValuesContact = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  message: "",
-  picture: "",
-};
 
 const ContactForm = () => {
   const { palette } = useTheme();
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const handleSubmit = async (values, onSubmitProps) => {
-    // You can handle the form submission logic here.
-    // For this example, let's assume the form submission is successful.
-    // You can send the form data to your backend server if needed.
-
-    // After successful form submission, reset the form
-    onSubmitProps.resetForm();
+  const [isMessageSent, setIsMessageSent] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
   };
+  const form = useRef();
 
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_d9eluvz",
+        "template_97ofyrh",
+        form.current,
+        "GsW6xicoFtgyj3Ipk"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          e.target.reset();
+          setIsMessageSent(true);
+          setShowSnackbar(true);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
   return (
-    <Formik
-      onSubmit={handleSubmit}
-      initialValues={initialValuesContact}
-      validationSchema={contactSchema}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        setFieldValue,
-        resetForm,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <Box
-            display="grid"
-            gap="30px"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
+    // <form ref={form} onSubmit={sendEmail}>
+    //   <label>Name</label>
+    //   <input type="text" name="user_name" />
+    //   <label>Email</label>
+    //   <input type="email" name="user_email" />
+    //   <label>Message</label>
+    //   <textarea name="message" />
+    //   <input type="submit" value="Send" />
+    // </form>
+    <div>
+      <form ref={form} onSubmit={sendEmail}>
+        <Box
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+        >
+          <div style={{ gridColumn: "span 4" }}>
             <TextField
-              label="First Name"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.firstName}
-              name="firstName"
-              error={Boolean(touched.firstName) && Boolean(errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
-              sx={{ gridColumn: "span 2" }}
+              label="Name"
+              variant="outlined"
+              fullWidth
+              name="user_name"
             />
-            <TextField
-              label="Last Name"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.lastName}
-              name="lastName"
-              error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
-              sx={{ gridColumn: "span 2" }}
-            />
+          </div>
+
+          <div style={{ gridColumn: "span 4" }}>
             <TextField
               label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
+              variant="outlined"
+              fullWidth
+              name="user_email"
             />
+          </div>
+
+          <div style={{ gridColumn: "span 4" }}>
             <TextField
               label="Message"
+              variant="outlined"
               multiline
               rows={4}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.message}
-              name="message"
-              error={Boolean(touched.message) && Boolean(errors.message)}
-              helperText={touched.message && errors.message}
-              sx={{ gridColumn: "span 4" }}
-            />
-          </Box>
-
-          {/* BUTTONS */}
-          <Box>
-            <Button
               fullWidth
-              type="submit"
-              sx={{
-                m: "2rem 0",
-                p: "1rem",
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
-              }}
-            >
-              Send Message
-            </Button>
-          </Box>
-        </form>
-      )}
-    </Formik>
+              name="message"
+            />
+          </div>
+        </Box>
+
+        {/* BUTTONS */}
+        <Box>
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            sx={{
+              m: "2rem 0",
+              backgroundColor: palette.primary.main,
+              color: palette.background.alt,
+              "&:hover": { color: palette.primary.main },
+            }}
+          >
+            Send Message
+          </Button>
+        </Box>
+      </form>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          elevation={6}
+          variant="filled"
+          severity="success"
+          onClose={handleCloseSnackbar}
+        >
+          Message sent successfully!
+        </Alert>
+      </Snackbar>
+    </div>
   );
 };
 

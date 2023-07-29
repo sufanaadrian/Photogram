@@ -9,6 +9,8 @@ import Form from "./Form";
 import { useState, useEffect } from "react";
 import { ArrowLeftOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import FlexBetween from "components/FlexBetween";
+
 const ContactPage = () => {
   const theme = useTheme();
   const [showContent, setShowContent] = useState(false);
@@ -64,6 +66,23 @@ const ContactPage = () => {
             <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
               This is Adi, fill up the form below so we can get in touch.
             </Typography>
+            <Typography fontSize="0.8rem" fontWeight="500" mb="0.3rem">
+              Contact info:
+            </Typography>
+            <Box gap="0.5rem" marginBottom="1rem">
+              <FlexBetween>
+                <Box>
+                  <Typography fontSize={"smaller"}>Email</Typography>{" "}
+                  <Typography fontWeight="500">
+                    adrian1sufana@gmail.com
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography fontSize={"smaller"}>Phone</Typography>{" "}
+                  <Typography fontWeight="500">0737061086</Typography>
+                </Box>
+              </FlexBetween>
+            </Box>
             <Form />
           </Box>
         </Box>

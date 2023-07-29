@@ -85,7 +85,7 @@ const Navbar = () => {
             className="title"
           >
             <img
-              src={`${BASE_URL}/assets/logo_latest.png`}
+              src={`${BASE_URL}/assets/final_logo.png`}
               alt="Logo"
               style={{
                 height: "50px",
