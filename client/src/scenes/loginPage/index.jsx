@@ -38,7 +38,7 @@ const LoginPage = () => {
               fontWeight="bold"
               fontSize={isNonMobile ? "120px" : "70px"}
             >
-              Photogram
+              SA-Visuals
             </Typography>
           </div>
         )}
@@ -88,7 +88,7 @@ const LoginPage = () => {
             backgroundColor={theme.palette.background.alt}
           >
             <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-              Welcome to Photogram!
+              Welcome to SA-Visuals!
             </Typography>
             <Form />
           </Box>
