@@ -17,7 +17,12 @@ const AdvertWidget = () => {
   const theme = useTheme();
 
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
+  const scrollToForm = () => {
+    window.scrollTo({
+      top: document.getElementById("highlights").offsetTop,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
       {isNonMobileScreens && (
@@ -83,6 +88,7 @@ const AdvertWidget = () => {
                 }}
               >
                 <Button
+                  onClick={scrollToForm}
                   variant="contained"
                   color="primary"
                   sx={{
@@ -116,7 +122,7 @@ const AdvertWidget = () => {
           </Box>
         </Box>
         {!isNonMobileScreens && (
-          <Box sx={{ marginTop: "80px" }}>
+          <Box id="highlights" sx={{ marginTop: "80px" }}>
             <Typography className="word">
               <span>H</span>
               <span>I</span>

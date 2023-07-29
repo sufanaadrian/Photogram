@@ -128,7 +128,7 @@ const SortMenu = ({
       <Popper
         anchorEl={anchorEl}
         open={isColorPickerVisible}
-        placement="top-start"
+        placement="bottom-start"
         disablePortal={true}
         style={{
           zIndex: "1",
@@ -165,7 +165,7 @@ const SortMenu = ({
       <Popper
         anchorEl={anchorEl}
         open={isSortMenuVisible}
-        placement="top-start" // Set the placement of the menu relative to the anchor element
+        placement="bottom-start" // Set the placement of the menu relative to the anchor element
         disablePortal={true} // Prevent the menu from being rendered in a separate portal element
         style={{
           zIndex: "1",
@@ -251,7 +251,7 @@ const SortMenu = ({
       <Popper
         anchorEl={anchorEl}
         open={isFilterMenuVisible}
-        placement="top-start" // Set the placement of the menu relative to the anchor element
+        placement="bottom-start" // Set the placement of the menu relative to the anchor element
         disablePortal={true} // Prevent the menu from being rendered in a separate portal element
         style={{
           zIndex: "1",
