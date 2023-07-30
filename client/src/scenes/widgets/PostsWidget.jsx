@@ -107,12 +107,24 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
           }
           if (filterCriteria.startsWith("make")) {
             const [, value] = filterCriteria.split(":");
-            return post.exifDataObject.Make === value.trim();
+            const makeFilter = value.trim().toLowerCase();
+            const makeExif =
+              post.exifDataObject && post.exifDataObject.Make
+                ? post.exifDataObject.Make.toLowerCase()
+                : "";
+            return makeExif.includes(makeFilter);
           }
           if (filterCriteria.startsWith("model")) {
             const [, value] = filterCriteria.split(":");
-            return post.exifDataObject.Model === value.trim();
+            const modelFilter = value.trim().toLowerCase();
+            const modelExif =
+              post.exifDataObject && post.exifDataObject.Model
+                ? post.exifDataObject.Model.toLowerCase()
+                : ""; // If Model is undefined, set an empty string
+
+            return modelExif.includes(modelFilter);
           }
+
           if (filterCriteria.startsWith("date")) {
             const [, value] = filterCriteria.split("=");
             return post.exifDataObject.DateTimeOriginal.startsWith(
@@ -145,115 +157,87 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
     page * postsPerPage
   );
 
-  return regex.test(window.location.pathname) ? (
-    <Container>
-      <Row gutterWidth={isLargeGrid ? 0 : undefined} style={{ width: "100%" }}>
-        {paginatedPosts.map(
-          ({
-            _id,
-            userId,
-            firstName,
-            lastName,
-            description,
-            cameraBody,
-            cameraLens,
-            location,
-            picturePath,
-            userPicturePath,
-            likes,
-            isSharable,
-            comments,
-            exifData,
-            dominantColors,
-            filterCriteria,
-          }) => (
-            <Col
-              key={_id}
-              xs={xl === 2 ? 12 : 3}
-              sm={xl === 2 ? 6 : 3}
-              md={xl === 2 ? 3 : 2}
-              lg={xl === 2 ? 3 : xl}
-              xl={xl === 2 ? xl : 0.8}
-            >
-              <PostWidget
-                postId={_id}
-                postUserId={userId}
-                name={`${firstName} ${lastName}`}
-                description={description}
-                cameraBody={cameraBody}
-                cameraLens={cameraLens}
-                location={location}
-                picturePath={picturePath}
-                userPicturePath={userPicturePath}
-                likes={likes}
-                isSharable={isSharable}
-                comments={comments}
-                exifData={exifData}
-                isLargeGrid={isLargeGrid}
-                isProfile={isProfile}
-                dominantColors={dominantColors}
-              />
-            </Col>
-          )
-        )}
-      </Row>
-      {xl === 2 && (
-        <Row justify="center" style={{ margin: "1rem" }}>
-          <Pagination
-            count={Math.ceil(posts.length / postsPerPage)}
-            page={page}
-            onChange={(event, newPage) => {
-              setPage(newPage);
-              window.scrollTo(0, 0);
-            }}
-            style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}
-          />
+  return (
+    <>
+      {/* <div
+        style={{
+          fontSize: "12px",
+          fontFamily: "sans-serif",
+          textAlign: "right",
+          margin: "0px 15px",
+        }}
+      >
+        Posts: {filteredAndSortedPosts.length}
+      </div> */}
+      <Container>
+        <Row
+          gutterWidth={isLargeGrid ? 0 : undefined}
+          style={{ width: "100%" }}
+        >
+          {paginatedPosts.map(
+            ({
+              _id,
+              userId,
+              firstName,
+              lastName,
+              description,
+              cameraBody,
+              cameraLens,
+              location,
+              picturePath,
+              userPicturePath,
+              likes,
+              isSharable,
+              comments,
+              exifData,
+              dominantColors,
+              filterCriteria,
+            }) => (
+              <Col
+                key={_id}
+                xs={xl === 2 ? 12 : 3}
+                sm={xl === 2 ? 6 : 3}
+                md={xl === 2 ? 3 : 2}
+                lg={xl === 2 ? 3 : xl}
+                xl={xl === 2 ? xl : 0.8}
+              >
+                <PostWidget
+                  postId={_id}
+                  postUserId={userId}
+                  name={`${firstName} ${lastName}`}
+                  description={description}
+                  cameraBody={cameraBody}
+                  cameraLens={cameraLens}
+                  location={location}
+                  picturePath={picturePath}
+                  userPicturePath={userPicturePath}
+                  likes={likes}
+                  isSharable={isSharable}
+                  comments={comments}
+                  exifData={exifData}
+                  isLargeGrid={isLargeGrid}
+                  isProfile={isProfile}
+                  dominantColors={dominantColors}
+                />
+              </Col>
+            )
+          )}
         </Row>
-      )}
-    </Container>
-  ) : (
-    <Container>
-      <Row style={{ width: "100%" }}>
-        {sortedPostsFeed.map(
-          ({
-            _id,
-            userId,
-            firstName,
-            lastName,
-            description,
-            cameraBody,
-            cameraLens,
-            location,
-            picturePath,
-            userPicturePath,
-            likes,
-            isSharable,
-            comments,
-            exifData,
-            dominantColors,
-          }) => (
-            <Col key={_id} xs={12} sm={6} md={6} lg={5} xl={4}>
-              <PostWidget
-                postId={_id}
-                postUserId={userId}
-                name={`${firstName} ${lastName}`}
-                description={description}
-                cameraBody={cameraBody}
-                cameraLens={cameraLens}
-                location={location}
-                picturePath={picturePath}
-                userPicturePath={userPicturePath}
-                likes={likes}
-                isSharable={isSharable}
-                comments={comments}
-                exifData={exifData}
-                dominantColors={dominantColors}
-              />
-            </Col>
-          )
+        {xl === 2 && (
+          <Row justify="center" style={{ margin: "1rem" }}>
+            <Pagination
+              count={Math.ceil(posts.length / postsPerPage)}
+              page={page}
+              onChange={(event, newPage) => {
+                setPage(newPage);
+                window.scrollTo(0, 0);
+              }}
+              style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}
+            />
+          </Row>
         )}
-      </Row>
-    </Container>
+      </Container>
+    </>
   );
 };
 export default PostsWidget;

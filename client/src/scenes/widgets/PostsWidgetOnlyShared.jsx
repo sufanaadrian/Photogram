@@ -106,11 +106,22 @@ const PostsWidgetOnlyShared = ({
           }
           if (filterCriteria.startsWith("make")) {
             const [, value] = filterCriteria.split(":");
-            return post.exifDataObject.Make === value.trim();
+            const makeFilter = value.trim().toLowerCase();
+            const makeExif =
+              post.exifDataObject && post.exifDataObject.Make
+                ? post.exifDataObject.Make.toLowerCase()
+                : "";
+            return makeExif.includes(makeFilter);
           }
           if (filterCriteria.startsWith("model")) {
             const [, value] = filterCriteria.split(":");
-            return post.exifDataObject.Model === value.trim();
+            const modelFilter = value.trim().toLowerCase();
+            const modelExif =
+              post.exifDataObject && post.exifDataObject.Model
+                ? post.exifDataObject.Model.toLowerCase()
+                : ""; // If Model is undefined, set an empty string
+
+            return modelExif.includes(modelFilter);
           }
           if (filterCriteria.startsWith("date")) {
             const [, value] = filterCriteria.split("=");
