@@ -8,6 +8,7 @@ import {
   MoreVert,
   DeleteOutline,
   FileDownloadOutlined,
+  EditLocationAltOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -72,9 +73,15 @@ const PostWidget = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorComments, setAnchorComments] = useState(null);
   const [showIconButton, setShowIconButton] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newLocation, setNewLocation] = useState(description);
+  const handleEditLocation = () => {
+    setIsEditing(!isEditing);
+  };
   const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
+
   useEffect(() => {
     const imgElement = document.querySelector(".post-image");
     setOriginalWidth(imgElement.offsetWidth);
@@ -167,6 +174,29 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
     if (!regex.test(window.location.pathname)) {
       window.location.reload();
+    }
+  };
+  const handleSaveLocation = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}/editLocation`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description: newLocation }),
+      });
+      console.log(response);
+      if (response.ok) {
+        // If the location is updated successfully on the server, update the description in the component state
+        // Note: You may also want to handle the scenario where the update fails (e.g., show an error message).
+        setIsEditing(false);
+      } else {
+        // Handle error scenario
+        console.error("Failed to update location");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
   const handleSaveClick = () => {
@@ -673,6 +703,30 @@ const PostWidget = ({
                     </ListItemIcon>
                     <ListItemText>Remove from feed</ListItemText>
                   </ListItem>
+                )}
+                {postUserId === loggedInUserId && (
+                  <ListItem onClick={handleEditLocation}>
+                    <ListItemIcon>
+                      <EditLocationAltOutlined fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Edit location</ListItemText>
+                  </ListItem>
+                )}
+                {isEditing && postUserId === loggedInUserId && (
+                  <div className="edit-location-container">
+                    <input
+                      type="text"
+                      className="edit-location-input"
+                      value={newLocation}
+                      onChange={(e) => setNewLocation(e.target.value)}
+                    />
+                    <button
+                      className="edit-location-button"
+                      onClick={handleSaveLocation}
+                    >
+                      Save location
+                    </button>
+                  </div>
                 )}
                 {!isLargeGrid && (
                   <ListItem onClick={handleDetailsClick}>

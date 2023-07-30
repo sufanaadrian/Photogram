@@ -130,3 +130,21 @@ export const deletePostFunc = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+export const editLocationFunc = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+
+    // Find the post by id and update the description field
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { description },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
