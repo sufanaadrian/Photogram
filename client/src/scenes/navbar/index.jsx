@@ -41,7 +41,10 @@ const Navbar = () => {
   const primaryDarkColor = theme.palette.primary.dark;
   const alternativeColor = theme.palette.background.alt;
   return (
-    <FlexBetween padding="0.5rem 2%" backgroundColor={alternativeColor}>
+    <FlexBetween
+      padding={isAllPath ? "0.5rem 2%" : "0.2rem 2%"}
+      backgroundColor={alternativeColor}
+    >
       <FlexBetween gap="1.75rem">
         {isAllPath ? (
           <Box>

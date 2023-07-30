@@ -81,20 +81,30 @@ const PostWidget_Highlights = ({
   const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
+  let initialScrollPosition = window.scrollY;
+  const SCROLL_THRESHOLD = 100;
   useEffect(() => {
     setNewLocation(newLocation);
     const imgElement = document.querySelector(".post-image");
     setOriginalWidth(imgElement.offsetWidth);
     setOriginalHeight(imgElement.offsetHeight);
     const handleScroll = () => {
-      if (isMenuVisible || showExifData) {
+      // Calculate the difference between the current scroll position and the initial position
+      const scrollDifference = Math.abs(window.scrollY - initialScrollPosition);
+
+      // If the user has scrolled a significant amount (greater than or equal to the threshold)
+      // close the menus
+      if (
+        scrollDifference >= SCROLL_THRESHOLD &&
+        (isMenuVisible || showExifData)
+      ) {
         setIsMenuVisible(false);
         setShowExifData(false);
-      }
-      setTimeout(() => {
         setIsComments(false);
-        setIsMenuVisible(false);
-      }, 5000);
+      }
+
+      // Reset the initial scroll position
+      initialScrollPosition = window.scrollY;
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -223,7 +233,7 @@ const PostWidget_Highlights = ({
       onMouseEnter={() => setShowIconButton(true)}
       onMouseLeave={() => {
         setShowIconButton(false);
-        setIsMenuVisible(false);
+        // setIsMenuVisible(false);
       }}
     >
       <UploadDetails

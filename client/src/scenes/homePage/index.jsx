@@ -14,7 +14,9 @@ const HomePage = () => {
   const [xl, setXl] = useState(1);
   return (
     <Box>
-      <Navbar />
+      <Box className="sticky-navbar">
+        <Navbar />
+      </Box>
       <Box
         width="100%"
         display={isNonMobileScreens ? "flex" : "block"}

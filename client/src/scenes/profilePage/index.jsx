@@ -47,7 +47,9 @@ const ProfilePage = () => {
 
   return (
     <Box>
-      <Navbar />
+      <Box className="sticky-navbar">
+        <Navbar />
+      </Box>
       <Box
         width="100%"
         padding={isNonMobileScreens ? "0%" : "2%"}

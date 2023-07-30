@@ -175,6 +175,14 @@ video {
   gap: 10px;
   margin: 5px;
 }
+/* CSS file */
+.sticky-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999; /* You can adjust the z-index value based on your layout needs */
+  background-color: white; /* Replace with your desired background color */
+  /* Add any other styling as needed */
+}
 
 /* Style for the input field */
 .edit-location-input {
