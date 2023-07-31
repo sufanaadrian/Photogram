@@ -31,7 +31,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
   const [, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
-
+  const [imagePreviews, setImagePreviews] = useState([]);
   const { _id_coded } = "64bc0534c39d385c73c1310b";
   const token = useSelector((state) => state.token);
   const mediumMain = palette.neutral.mediumMain;
@@ -133,16 +133,48 @@ const MyPostWidget = ({ picturePath, userId }) => {
           onDrop={(acceptedFiles) => {
             setImages(acceptedFiles);
             setHasImage(!hasImage);
+            // Step 2: Generate temporary URLs for the image previews
+            const tempImagePreviews = acceptedFiles.map((file) =>
+              URL.createObjectURL(file)
+            );
+            setImagePreviews(tempImagePreviews);
           }} // store all selected files
         >
           {({ getRootProps, getInputProps }) => (
             <Box {...getRootProps()}>
               {hasImage ? (
                 images.map((image, index) => (
-                  <Box key={index}>
-                    <FlexBetween key={index}>
-                      <Typography>{image.name}</Typography>
-
+                  <Box key={index} display="flex" width="100%">
+                    {imagePreviews[index] && (
+                      <img
+                        src={imagePreviews[index]}
+                        alt="preview"
+                        style={{
+                          width: "70px",
+                          height: "70px",
+                          objectFit: "cover",
+                          marginRight: "1rem",
+                          marginBottom: "0.5rem",
+                        }}
+                      />
+                    )}
+                    <Box flex="1" display="flex" alignItems="center">
+                      <InputBase
+                        placeholder="Add description"
+                        onChange={(e) => {
+                          const newDescriptions = [...descriptions];
+                          newDescriptions[index] = e.target.value;
+                          setDescriptions(newDescriptions);
+                        }}
+                        value={descriptions[index]}
+                        sx={{
+                          width: "100%",
+                          backgroundColor: palette.neutral.light,
+                          borderRadius: "2rem",
+                          padding: "0.1rem 0.3rem",
+                          height: "2rem",
+                        }}
+                      />
                       <IconButton
                         onClick={() => {
                           removeImage(index);
@@ -154,22 +186,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
                       >
                         <DeleteOutlined />
                       </IconButton>
-                    </FlexBetween>
-                    <InputBase
-                      placeholder="Add description"
-                      onChange={(e) => {
-                        const newDescriptions = [...descriptions];
-                        newDescriptions[index] = e.target.value;
-                        setDescriptions(newDescriptions);
-                      }}
-                      value={descriptions[index]}
-                      sx={{
-                        width: "100%",
-                        backgroundColor: palette.neutral.light,
-                        borderRadius: "2rem",
-                        padding: "0.1rem 0.3rem",
-                      }}
-                    />
+                    </Box>
                   </Box>
                 ))
               ) : (
@@ -184,6 +201,37 @@ const MyPostWidget = ({ picturePath, userId }) => {
                 >
                   Add or drop image(s) here
                 </Typography>
+              )}
+              {hasImage && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.setAttribute("type", "file");
+                    input.setAttribute("accept", ".jpg,.jpeg,.png");
+                    input.setAttribute("multiple", "multiple");
+                    input.onchange = (e) => {
+                      const files = e.target.files;
+                      if (files && files.length > 0) {
+                        const newImages = [...images, ...files];
+                        setImages(newImages);
+                        // Step 4: Generate temporary URLs for the image previews
+                        const tempImagePreviews = [
+                          ...imagePreviews,
+                          ...Array.from(files).map((file) =>
+                            URL.createObjectURL(file)
+                          ),
+                        ];
+                        setImagePreviews(tempImagePreviews);
+                      }
+                    };
+                    input.click();
+                  }}
+                  sx={{ marginTop: "1rem" }}
+                >
+                  Add More
+                </Button>
               )}
               {!hasImage && <input {...getInputProps()} />}
             </Box>

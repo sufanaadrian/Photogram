@@ -9,6 +9,7 @@ import Form from "./Form";
 import { useState, useEffect } from "react";
 import { ArrowLeftOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import loginimage from "../../assets/loginimage.jpg";
 const LoginPage = () => {
   const theme = useTheme();
   const [showContent, setShowContent] = useState(false);
@@ -22,78 +23,66 @@ const LoginPage = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  const scrollToForm = () => {
-    window.scrollTo({
-      top: document.getElementById("login-form").offsetTop,
-      behavior: "smooth",
-    });
-  };
+
   return (
     <div>
-      <div className="video">
-        <div className="overlayVideo"></div>
-        {showContent && (
-          <div className="contentVideo">
-            <Typography
-              fontWeight="bold"
-              fontSize={isNonMobile ? "120px" : "70px"}
-            >
-              SA-Visuals
-            </Typography>
-          </div>
-        )}
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: "2rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            textAlign: "center",
-            zIndex: 1,
-          }}
-        >
-          <Button
-            size="large"
-            sx={{
-              animation: "pulse 1s infinite",
-              "@keyframes pulse": {
-                "0%": { transform: "scale(1)" },
-                "50%": { transform: "scale(1.1)" },
-                "100%": { transform: "scale(1)" },
-              },
-              fontSize: "1rem",
+      <div>
+        <div className="image-container">
+          {" "}
+          {/* Add a container div */}
+          <img
+            src={loginimage}
+            alt="login"
+            className="zoomed-image"
+            style={{
+              width: !isNonMobile ? "auto" : "100%",
+              heigh: "100%",
+              maxWidth:
+                "none" /* Ensure the image doesn't have a maximum width constraint */,
+              maxHeight: "none",
+              objectFit: "cover",
+              // transform: scale(
+              //   1.1
+              // ); /* Adjust the scale factor to zoom the image as needed */
             }}
-            onClick={scrollToForm}
-          >
-            Log In
-          </Button>
-        </Box>
+          />
+        </div>
+        <div className="contentVideo">
+          {/* Rest of your content */}
+          {/* ... */}
+        </div>
       </div>
-      <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/all")}
-          zIndex="1"
-        >
-          Go back <ArrowLeftOutlined sx={{ marginLeft: "0.5rem" }} />
-        </Button>
+      <div className="contentVideo">
+        <Typography fontWeight="bold" fontSize={isNonMobile ? "120px" : "70px"}>
+          SA-Visuals
+        </Typography>
 
-        <Box display="flex" flexWrap="wrap" justifyContent="center">
-          <Box
-            id="login-form"
-            width={isNonMobile ? "30%" : "100%"}
-            p="2rem"
-            m="2rem 0"
-            backgroundColor={theme.palette.background.alt}
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/all")}
+            zIndex="1"
           >
-            <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-              Welcome to SA-Visuals!
-            </Typography>
-            <Form />
+            Go back <ArrowLeftOutlined sx={{ marginLeft: "0.5rem" }} />
+          </Button>
+
+          <Box display="flex" flexWrap="wrap" justifyContent="center">
+            <Box
+              id="login-form"
+              width={isNonMobile ? "100%" : "100%"}
+              p="2rem"
+              m="2rem 0"
+              backgroundColor="rgba(0, 0, 0, 0.4)"
+            >
+              <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
+                Welcome to SA-Visuals!
+              </Typography>
+              <Form />
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </div>
     </div>
   );
 };

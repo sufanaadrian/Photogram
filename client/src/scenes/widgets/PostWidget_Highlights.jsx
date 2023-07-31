@@ -72,7 +72,7 @@ const PostWidget_Highlights = ({
   const [showExifData, setShowExifData] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorComments, setAnchorComments] = useState(null);
-  const [showIconButton, setShowIconButton] = useState(false);
+  const [showIconButton, setShowIconButton] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [newLocation, setNewLocation] = useState(description);
   const handleEditLocation = () => {
@@ -230,7 +230,7 @@ const PostWidget_Highlights = ({
     <WidgetWrapper
       m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0.1rem 0 0.1rem 0"}
       tag="gallery"
-      onMouseEnter={() => setShowIconButton(true)}
+      // onMouseEnter={() => setShowIconButton(true)}
       onMouseLeave={() => {
         setShowIconButton(false);
         // setIsMenuVisible(false);

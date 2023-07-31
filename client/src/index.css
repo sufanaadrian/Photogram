@@ -100,6 +100,27 @@ video {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
 }
+/* CSS file */
+/* CSS file */
+.image-container {
+  height: 100vh; /* Set the container height to 100vh */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  overflow: hidden; /* Hide any overflow from the image */
+}
+
+.zoomed-image {
+  width: auto;
+  height: 100%;
+  max-width: none; /* Ensure the image doesn't have a maximum width constraint */
+  max-height: none; /* Ensure the image doesn't have a maximum height constraint */
+  transform: scale(
+    1.1
+  ); /* Adjust the scale factor to zoom the image as needed */
+  object-fit: cover; /* This will crop the image to fit the container while maintaining aspect ratio */
+}
+
 @keyframes floatAnimation {
   0% {
     transform: translateY(0);

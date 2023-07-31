@@ -72,7 +72,7 @@ const PostWidget = ({
   const [showExifData, setShowExifData] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorComments, setAnchorComments] = useState(null);
-  const [showIconButton, setShowIconButton] = useState(false);
+  const [showIconButton, setShowIconButton] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [newLocation, setNewLocation] = useState(description);
   const handleEditLocation = () => {
@@ -98,6 +98,7 @@ const PostWidget = ({
         (isMenuVisible || showExifData)
       ) {
         setIsMenuVisible(false);
+
         setShowExifData(false);
         setIsComments(false);
       }
@@ -229,10 +230,10 @@ const PostWidget = ({
     <WidgetWrapper
       m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0rem  0.1rem 0rem 0.1rem"}
       tag="gallery"
-      onMouseEnter={() => setShowIconButton(true)}
+      // onMouseEnter={() => setShowIconButton(true)}
       onMouseLeave={() => {
-        setShowIconButton(false);
-        setIsMenuVisible(false);
+        // setShowIconButton(false);
+        // setIsMenuVisible(false);
       }}
     >
       <UploadDetails
@@ -672,17 +673,18 @@ const PostWidget = ({
             marginBottom: "0.2rem",
           }}
         >
-          {showIconButton && isLargeGrid && (
-            <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
-              <MoreVert />
-            </IconButton>
-          )}
-          {!isLargeGrid && (
-            <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
-              <MoreVert />
-            </IconButton>
-          )}
-
+          <div style={{ fontSize: "10" }}>
+            {showIconButton && isLargeGrid && (
+              <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
+                <MoreVert />
+              </IconButton>
+            )}
+            {!isLargeGrid && (
+              <IconButton onClick={handleMenuClick} style={{ color: "white" }}>
+                <MoreVert />
+              </IconButton>
+            )}
+          </div>
           <Popper
             anchorEl={anchorEl}
             open={isMenuVisible}
