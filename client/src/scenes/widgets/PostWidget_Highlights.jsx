@@ -64,7 +64,7 @@ const PostWidget_Highlights = ({
   const main = palette.neutral.main;
   const primary = palette.primary.main;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
+  const [menuVisibility, setMenuVisibility] = useState({});
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [originalWidth, setOriginalWidth] = useState(0);
   const [originalHeight, setOriginalHeight] = useState(0);
@@ -278,188 +278,19 @@ const PostWidget_Highlights = ({
             }}
             src={`${BASE_URL}/assets/${picturePath}`}
           />
-          {/* {isFullScreen && !isLargeGrid && (
-            <div>
-              <Typography
-                style={{
-                  position: "fixed",
-                  bottom: 0,
-                  left: 0,
-                  marginBottom: "2.5rem",
-                  color: "white",
-                  fontSize: "small",
-                  fontWeight: "500",
-                }}
-                color={main}
-                sx={{ ml: "0.5rem" }}
-              >
-                {description === "undefined" ? "" : description}
-              </Typography>
-              <List
-                className="scrollbar"
-                style={{
-                  maxHeight: "90vh",
-                  overflow: "auto",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  zIndex: 1,
-                  width: "100%",
-                  color: "white",
-                }}
-              >
-                <ListItem>
-                  <ListItemText
-                    primary="DominantColors Palette"
-                    secondary={
-                      <div
-                        style={{
-                          backgroundColor: !isNonMobileScreens
-                            ? "rgba(0,0,0,0.5)"
-                            : undefined,
-                          padding: "0.3rem",
-                          borderRadius: "0.5rem",
-                          display: "block",
-                        }}
-                      >
-                        {dominantColors.map((color, index) => (
-                          <div
-                            key={index}
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <div
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`,
-                              }}
-                            />
-                            <span
-                              style={{
-                                marginLeft: "10px",
-                                fontWeight: "bold",
-                                color: "white",
-                              }}
-                            >
-                              {`RGB[${index + 1}]: ${color.r} ${color.g} ${
-                                color.b
-                              }`}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    }
-                  />
-                </ListItem>
-
-                <ListItem>
-                  <ListItemText
-                    primary="f/"
-                    secondary={exifDataObject.FNumber}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="Exposure Time"
-                    secondary={"1/" + 1 / exifDataObject.ExposureTime}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="ISO"
-                    secondary={exifDataObject.ISOSpeedRatings}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="FocalLength"
-                    secondary={exifDataObject.FocalLength + "mm"}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="Make"
-                    secondary={exifDataObject.Make}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="Model"
-                    secondary={exifDataObject.Model}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="DateTime"
-                    secondary={exifDataObject.DateTimeOriginal}
-                  />
-                </ListItem>
-
-                <ListItem>
-                  <ListItemText
-                    primary="ExposureMode"
-                    secondary={exifDataObject.ExposureMode}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="Flash"
-                    secondary={
-                      exifDataObject.Flash ===
-                      "Flash did not fire, compulsory flash mode"
-                        ? "Off"
-                        : "On"
-                    }
-                  />
-                </ListItem>
-              </List>
-              <FlexBetween
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  marginBottom: "0.2rem",
-                  color: "white",
-                }}
-              >
-                <FlexBetween gap="0.1rem">
-                  <FlexBetween>
-                    <IconButton onClick={patchLike} style={{ color: "white" }}>
-                      {isLiked ? (
-                        <FavoriteOutlined sx={{ color: primary }} />
-                      ) : (
-                        <FavoriteBorderOutlined />
-                      )}
-                    </IconButton>
-                    <Typography>{likeCount}</Typography>
-                  </FlexBetween>
-
-                  <FlexBetween gap="0.2rem">
-                    <IconButton
-                      onClick={handleCommentsMenuClick}
-                      style={{ color: "white" }}
-                    >
-                      <ChatBubbleOutlineOutlined />
-                    </IconButton>
-                    <Typography m="0px 1rem 0 0">{comments.length}</Typography>
-                  </FlexBetween>
-                </FlexBetween>
-              </FlexBetween>
-            </div>
-          )} */}
         </div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            borderRadius: !isLargeGrid ? "0.75rem" : "0",
-            height: "45%",
-            background:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))",
-          }}
-        />
+        {isLargeGrid && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "13%",
+              background: "rgba(0,0,0,0.6)",
+            }}
+          />
+        )}
         {isSharable === true && (
           <Typography
             style={{ position: "absolute", top: 0, right: 3, color: "white" }}

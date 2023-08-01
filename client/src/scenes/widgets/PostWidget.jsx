@@ -74,6 +74,7 @@ const PostWidget = ({
   const [anchorComments, setAnchorComments] = useState(null);
   const [showIconButton, setShowIconButton] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null); // Track the currently selected image
   const [newLocation, setNewLocation] = useState(description);
   const handleEditLocation = () => {
     setIsEditing(!isEditing);
@@ -117,6 +118,7 @@ const PostWidget = ({
     setIsMenuVisible(!isMenuVisible);
   };
   const toggleFullScreen = () => {
+    setIsMenuVisible(false);
     setIsFullScreen(!isFullScreen);
   };
   const handleMenuClick = (event) => {
@@ -465,10 +467,8 @@ const PostWidget = ({
               bottom: 0,
               left: 0,
               right: 0,
-              borderRadius: !isLargeGrid ? "0.75rem" : "0",
-              height: "45%",
-              background:
-                "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))",
+              height: "13%",
+              background: "rgba(0,0,0,0.6)",
             }}
           />
         )}
