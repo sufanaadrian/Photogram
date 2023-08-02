@@ -12,6 +12,7 @@ const HomePage = () => {
   const [filterCriteria, setFilterCriteria] = useState("all");
   const [colorCriteria, setColorCriteria] = useState("all");
   const [xl, setXl] = useState(1);
+
   return (
     <Box>
       <Box className="sticky-navbar">

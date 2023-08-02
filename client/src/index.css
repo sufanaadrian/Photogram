@@ -128,11 +128,13 @@ video {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  background-color: transparent;
+  background-color: "";
 
   max-width: 300px;
 }
-
+.Select-menu-outer {
+  z-index: 100 !important;
+}
 .edit-imageType-container select {
   flex: 1;
   font-family: Arial, sans-serif;
@@ -345,4 +347,18 @@ video {
 .word span:nth-child(7).active {
   animation: shrinkJump 1s ease-in-out;
   transform-origin: bottom center;
+}
+/* customStyles.css */
+
+/* Set the background color for the Select menu */
+/* customStyles.css */
+
+/* Set the background color for the Select menu */
+.MuiSelect-root {
+  background-color: white !important;
+}
+
+/* Set the background color for the Select menu items */
+.MuiListItem-root.MuiMenuItem-root {
+  background-color: white !important;
 }

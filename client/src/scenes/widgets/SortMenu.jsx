@@ -13,6 +13,10 @@ import {
   DialogActions,
   DialogTitle,
   Divider,
+  Typography,
+  Box,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useTheme } from "@mui/material";
 import {
@@ -46,12 +50,14 @@ const SortMenu = ({
   const [modelInput, setModelInput] = useState("");
   const [dateInput, setDateInput] = useState("");
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [showAllMetadataFilters, setShowAllMetadataFilters] = useState(false);
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) =>
     state.user ? state.user._id : null
   );
   const [selectedColor, setSelectedColor] = useState("#ffffff");
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const [selectedImageType, setSelectedImageType] = useState("portrait");
   const [xl, setXl] = useState(1);
   const isNonMobile = useMediaQuery("(min-width:1000px)");
   const regex = /\/all/;
@@ -86,6 +92,9 @@ const SortMenu = ({
   const handleGeneratePDF = () => {
     generatePDF(token, loggedInUserId);
   };
+  const handleShowAllMetadataFilters = () => {
+    setShowAllMetadataFilters(!showAllMetadataFilters);
+  };
   const handleColorMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsColorPickerVisible(!isColorPickerVisible);
@@ -110,6 +119,7 @@ const SortMenu = ({
   };
   const setFilterCriteriaClick = (filterCriteria) => {
     onFilterCriteriaChange(filterCriteria);
+    setIsFilterSortMenuVisible(false);
   };
   const setColorPickerValue = (filterCriteria) => {
     onColorCriteriaChange(filterCriteria);
@@ -119,7 +129,9 @@ const SortMenu = ({
     onXLChange(xl === 1 ? 2 : 1);
     setXl(xl === 1 ? 2 : 1);
   };
-
+  const handleImageTypeChange = (event) => {
+    setSelectedImageType(event.target.value);
+  };
   return (
     <div>
       <IconButton onClick={handleColorMenuClick}>
@@ -263,7 +275,7 @@ const SortMenu = ({
           <List>
             <ListItem>
               <ListItemText style={{ color: palette.primary.dark }}>
-                Filter by:
+                Filter by visibility:
               </ListItemText>
             </ListItem>
             <ListItem
@@ -308,6 +320,41 @@ const SortMenu = ({
                 </ListItem> */}
               </>
             )}
+            <Divider />
+            <ListItem>
+              <ListItemText style={{ color: palette.primary.dark }}>
+                Filter by category:
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <select
+                className="edit-imageType-container"
+                value={selectedImageType}
+                onChange={handleImageTypeChange}
+              >
+                <option value="portrait">Portrait</option>
+                <option value="automotive">Automotive</option>
+                <option value="wildlife">Wildlife</option>
+                <option value="nature">Nature</option>
+                <option value="pets">Animals</option>
+                <option value="street_photography">Street Photography</option>
+              </select>
+
+              <Button
+                onClick={() =>
+                  setFilterCriteriaClick("imageType:" + selectedImageType)
+                }
+                size="small"
+              >
+                Filter
+              </Button>
+            </ListItem>
+            <Divider />
+            <ListItem>
+              <ListItemText style={{ color: palette.primary.dark }}>
+                Filter by metadata:
+              </ListItemText>
+            </ListItem>
             <ListItem>
               <TextField
                 label="ISO Ex: 100"
@@ -347,59 +394,90 @@ const SortMenu = ({
                 Filter
               </Button>
             </ListItem>
-            <ListItem>
-              <TextField
-                label="FLength Ex: 50mm"
-                size="small"
-                onChange={(event) => setFocalLengthInput(event.target.value)}
-              />
-              <Button
-                onClick={() => setFilterCriteriaClick("mm:" + focalLengthInput)}
-                size="small"
-              >
-                Filter
-              </Button>
-            </ListItem>
-            <ListItem>
-              <TextField
-                label="Make Ex: Canon"
-                size="small"
-                onChange={(event) => setMakeInput(event.target.value)}
-              />
-              <Button
-                onClick={() => setFilterCriteriaClick("make:" + makeInput)}
-                size="small"
-              >
-                Filter
-              </Button>
-            </ListItem>
-            <ListItem>
-              <TextField
-                label="Model Ex: 5D Mark IV"
-                size="small"
-                onChange={(event) => setModelInput(event.target.value)}
-              />
-              <Button
-                onClick={() => setFilterCriteriaClick("model:" + modelInput)}
-                size="small"
-              >
-                Filter
-              </Button>
-            </ListItem>
-            <ListItem>
-              <TextField
-                label="Date Ex: 2022:09:11"
-                size="small"
-                onChange={(event) => setDateInput(event.target.value)}
-              />
-              <Button
-                type="date"
-                onClick={() => setFilterCriteriaClick("date=" + dateInput)}
-                size="small"
-              >
-                Filter
-              </Button>
-            </ListItem>
+
+            {showAllMetadataFilters && (
+              <Box>
+                <ListItem>
+                  <TextField
+                    label="FLength Ex: 50mm"
+                    size="small"
+                    onChange={(event) =>
+                      setFocalLengthInput(event.target.value)
+                    }
+                  />
+                  <Button
+                    onClick={() =>
+                      setFilterCriteriaClick("mm:" + focalLengthInput)
+                    }
+                    size="small"
+                  >
+                    Filter
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    label="Make Ex: Canon"
+                    size="small"
+                    onChange={(event) => setMakeInput(event.target.value)}
+                  />
+                  <Button
+                    onClick={() => setFilterCriteriaClick("make:" + makeInput)}
+                    size="small"
+                  >
+                    Filter
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    label="Model Ex: 5D Mark IV"
+                    size="small"
+                    onChange={(event) => setModelInput(event.target.value)}
+                  />
+                  <Button
+                    onClick={() =>
+                      setFilterCriteriaClick("model:" + modelInput)
+                    }
+                    size="small"
+                  >
+                    Filter
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    label="Date Ex: 2022:09:11"
+                    size="small"
+                    onChange={(event) => setDateInput(event.target.value)}
+                  />
+                  <Button
+                    type="date"
+                    onClick={() => setFilterCriteriaClick("date=" + dateInput)}
+                    size="small"
+                  >
+                    Filter
+                  </Button>
+                </ListItem>
+              </Box>
+            )}
+            <Box
+              display="flex"
+              justifyContent="center"
+              onClick={handleShowAllMetadataFilters}
+              sx={{
+                "&:hover": {
+                  color: palette.primary.dark,
+                  cursor: "pointer",
+                },
+              }}
+            >
+              {!showAllMetadataFilters ? (
+                <ArrowDownwardOutlined />
+              ) : (
+                <ArrowUpwardOutlined />
+              )}
+              <Typography>
+                {showAllMetadataFilters ? "Show less" : "Show more"}
+              </Typography>
+            </Box>
           </List>
         </Paper>
       </Popper>

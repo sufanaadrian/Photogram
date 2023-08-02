@@ -88,6 +88,10 @@ const PostsWidgetOnlyShared = ({
           if (!filterCriteria) return post;
           if (filterCriteria === "showAll") return post;
           if (filterCriteria === "isOnFeed") return post.isSharable;
+          if (filterCriteria.startsWith("imageType:")) {
+            const [, value] = filterCriteria.split(":");
+            return post.imageType === value.trim();
+          }
           if (filterCriteria.startsWith("f/")) {
             const [, value] = filterCriteria.split("/");
             return post.exifDataObject.FNumber === Number(value.trim());
