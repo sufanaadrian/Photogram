@@ -8,6 +8,7 @@ import {
   removePostFromFeedFunc,
   deletePostFunc,
   editLocationFunc,
+  editCategoryFunc,
 } from "../controllers/posts.js";
 import { verifyWithToken as verifyWithToken } from "../middleware/auth.js";
 
@@ -22,6 +23,7 @@ router.get("/all", getAllPostsFunc); // New route to fetch all posts
 router.patch("/:id/like", verifyWithToken, likePostFromFeedFunc);
 router.patch("/:id/share", verifyWithToken, sharePostInFeedFunc);
 router.patch("/:id/editLocation", verifyWithToken, editLocationFunc);
+router.patch("/:id/editCategory", verifyWithToken, editCategoryFunc);
 router.patch("/:id/removeShare", verifyWithToken, removePostFromFeedFunc);
 
 /* DELETE */

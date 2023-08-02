@@ -9,6 +9,7 @@ import {
   DeleteOutline,
   FileDownloadOutlined,
   EditLocationAltOutlined,
+  CategoryOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -51,6 +52,7 @@ const PostWidget = ({
   isLargeGrid,
   isProfile,
   dominantColors,
+  imageType,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -76,9 +78,9 @@ const PostWidget = ({
   const [isEditing, setIsEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // Track the currently selected image
   const [newLocation, setNewLocation] = useState(description);
-  const handleEditLocation = () => {
-    setIsEditing(!isEditing);
-  };
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
+  const [selectedImageType, setSelectedImageType] = useState("");
+
   const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
@@ -89,6 +91,9 @@ const PostWidget = ({
     setOriginalWidth(imgElement.offsetWidth);
     setOriginalHeight(imgElement.offsetHeight);
     const handleScroll = () => {
+      setNewLocation(newLocation);
+      setSelectedImageType(selectedImageType);
+
       // Calculate the difference between the current scroll position and the initial position
       const scrollDifference = Math.abs(window.scrollY - initialScrollPosition);
 
@@ -112,7 +117,14 @@ const PostWidget = ({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isMenuVisible, showExifData]);
+  }, [
+    isMenuVisible,
+    showExifData,
+    description,
+    newLocation,
+    imageType,
+    selectedImageType,
+  ]);
   const handleDetailsClick = () => {
     setShowExifData(!showExifData);
     setIsMenuVisible(!isMenuVisible);
@@ -124,12 +136,23 @@ const PostWidget = ({
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsMenuVisible(!isMenuVisible);
+    setIsEditing(false);
+    setIsEditingCategory(false);
   };
   const handleCommentsMenuClick = (event) => {
     setAnchorComments(event.currentTarget);
     setIsComments(!isComments);
   };
-
+  const handleEditLocation = () => {
+    setIsEditing(!isEditing);
+  };
+  const handleImageTypeChange = (event) => {
+    setSelectedImageType(event.target.value);
+  };
+  const handleEditCategory = () => {
+    setIsEditingCategory(!isEditingCategory);
+    setIsEditing(false);
+  };
   const handleDeleteClick = async () => {
     try {
       const response = await fetch(`${BASE_URL}/posts/${postId}/deletePost`, {
@@ -203,11 +226,41 @@ const PostWidget = ({
         // If the location is updated successfully on the server, update the description in the component state
         // Note: You may also want to handle the scenario where the update fails (e.g., show an error message).
         setIsEditing(false);
+        setIsMenuVisible(false);
+        setNewLocation(newLocation);
       } else {
         // Handle error scenario
         console.error("Failed to update location");
       }
     } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSaveImageType = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}/editCategory`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageType: selectedImageType }),
+      });
+      console.log(response);
+      if (response.ok) {
+        // If the location is updated successfully on the server, update the description in the component state
+        // Note: You may also want to handle the scenario where the update fails (e.g., show an error message).
+        setIsEditingCategory(false);
+        setSelectedImageType(selectedImageType);
+        console.log(selectedImageType);
+        setIsMenuVisible(false);
+      } else {
+        // Handle error scenario
+        console.error("Failed to update location");
+      }
+    } catch (error) {
+      console.log("errorororo");
+
       console.error(error);
     }
   };
@@ -629,7 +682,7 @@ const PostWidget = ({
               color={main}
               sx={{ ml: "0.5rem" }}
             >
-              {description === "undefined" ? "" : description}
+              {newLocation === "undefined" ? "" : newLocation}
             </Typography>
             <FlexBetween
               style={{
@@ -736,6 +789,40 @@ const PostWidget = ({
                       onClick={handleSaveLocation}
                     >
                       Save location
+                    </button>
+                  </div>
+                )}
+                {postUserId === loggedInUserId && (
+                  <ListItem onClick={handleEditCategory}>
+                    <ListItemIcon>
+                      <CategoryOutlined fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Edit category</ListItemText>
+                  </ListItem>
+                )}
+                {isEditingCategory && postUserId === loggedInUserId && (
+                  <div className="edit-imageType-container">
+                    <select
+                      value={selectedImageType}
+                      onChange={handleImageTypeChange}
+                    >
+                      <option value={imageType}>Current:{imageType}</option>{" "}
+                      <option value="other">Other</option>
+                      <option value="portrait">Portrait</option>
+                      <option value="automotive">Automotive</option>
+                      <option value="wildlife">Wildlife</option>
+                      <option value="nature">Nature</option>
+                      <option value="pets">Animals</option>
+                      <option value="street_photography">
+                        Street Photography
+                      </option>
+                    </select>
+
+                    <button
+                      className="edit-imageType-button"
+                      onClick={handleSaveImageType}
+                    >
+                      Save
                     </button>
                   </div>
                 )}

@@ -150,3 +150,20 @@ export const editLocationFunc = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+export const editCategoryFunc = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { imageType } = req.body;
+
+    // Find the post by id and update the imageType field
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { imageType },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};

@@ -176,6 +176,7 @@ const PostsWidgetOnlyShared = ({
               comments,
               exifData,
               dominantColors,
+              imageType,
             }) => (
               <Col
                 key={_id}
@@ -201,6 +202,7 @@ const PostsWidgetOnlyShared = ({
                   exifData={exifData}
                   isLargeGrid={isLargeGrid}
                   dominantColors={dominantColors}
+                  imageType={imageType}
                 />
               </Col>
             )

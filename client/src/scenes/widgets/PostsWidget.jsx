@@ -192,6 +192,7 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
               exifData,
               dominantColors,
               filterCriteria,
+              imageType,
             }) => (
               <Col
                 key={_id}
@@ -218,6 +219,7 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
                   isLargeGrid={isLargeGrid}
                   isProfile={isProfile}
                   dominantColors={dominantColors}
+                  imageType={imageType}
                 />
               </Col>
             )

@@ -120,6 +120,51 @@ video {
   ); /* Adjust the scale factor to zoom the image as needed */
   object-fit: cover; /* This will crop the image to fit the container while maintaining aspect ratio */
 }
+/* Remove default arrow and apply custom arrow */
+.edit-imageType-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: transparent;
+
+  max-width: 300px;
+}
+
+.edit-imageType-container select {
+  flex: 1;
+  font-family: Arial, sans-serif;
+  text-emphasis-color: RED;
+  background-color: transparent;
+  border: none;
+  color: white;
+  outline: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.edit-imageType-container select option {
+  /* Style options if needed */
+  color: black;
+  background-color: transparent;
+}
+
+.edit-imageType-container button {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.edit-imageType-container button:hover {
+  background-color: #0056b3;
+}
 
 @keyframes floatAnimation {
   0% {
