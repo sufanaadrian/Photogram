@@ -11,6 +11,7 @@ export const createPostInFeedFunc = async (req, res) => {
       isSharable,
       exifData,
       dominantColors,
+      imageType,
     } = req.body;
     const user = await User.findById(userId);
     const newPostInfEED = new Post({
@@ -28,6 +29,7 @@ export const createPostInFeedFunc = async (req, res) => {
       comments: [],
       exifData,
       dominantColors,
+      imageType,
     });
     await newPostInfEED.save();
 

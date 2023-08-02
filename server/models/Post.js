@@ -46,6 +46,19 @@ const postSchema = mongoose.Schema(
       ],
       default: [],
     },
+    imageType: {
+      type: String,
+      enum: [
+        "portrait",
+        "automotive",
+        "wildlife",
+        "nature",
+        "pets",
+        "street_photography",
+        "other",
+      ],
+      default: "other",
+    },
   },
   { timestamps: true }
 );
