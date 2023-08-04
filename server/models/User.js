@@ -37,6 +37,11 @@ const UserSchema = new mongoose.Schema(
     cameraBody: String,
     cameraLens: String,
     impressions: Number,
+    role: {
+      type: String,
+      enum: ["admin", "standard"], // This ensures the role can only be "admin" or "user"
+      default: "standard", // Default role is "user"
+    },
   },
   { timestamps: true }
 );

@@ -2,6 +2,7 @@
 
 import mongoose from "mongoose";
 import Post from "./models/Post.js";
+import User from "./models/User.js";
 const updateDBdata = async () => {
   try {
     await mongoose.connect(
@@ -12,23 +13,35 @@ const updateDBdata = async () => {
       }
     );
 
-    const postsWithoutImageType = await Post.find({
-      imageType: { $exists: false },
+    // const postsWithoutImageType = await Post.find({
+    //   imageType: { $exists: false },
+    // });
+    const usersWithoutRole = await User.find({
+      role: { $exists: false },
     });
-
     // Iterate through each post without the imageType field and set the imageType based on some logic
-    for (const post of postsWithoutImageType) {
-      // Example: Set the imageType based on the dominantColors field
+    // for (const post of postsWithoutImageType) {
+    //   // Example: Set the imageType based on the dominantColors field
 
-      post.imageType = "other";
+    //   post.imageType = "other";
 
-      // Save the updated post
-      await post.save();
+    //   // Save the updated post
+    //   await post.save();
+    // }
+    for (const user of usersWithoutRole) {
+      // Example: Set the role based on whether it's the admin user or not
+      if (user.email === "adrian1@yahoo.com") {
+        user.role = "admin";
+      } else {
+        user.role = "standard";
+      }
+
+      // Save the updated user
+      await user.save();
     }
-
-    console.log("Successfully updated imageType for existing posts.");
+    console.log("Successful update.");
   } catch (error) {
-    console.error("Error updating imageType:", error);
+    console.error("Error updating:", error);
   } finally {
     // Close the database connection after updating
     mongoose.connection.close();
