@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeftOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import loginimage from "../../assets/loginimage.jpg";
+import compressed_loginimage from "../../assets/loginimage-min.jpg";
 const LoginPage = () => {
   const theme = useTheme();
   const [showContent, setShowContent] = useState(false);
@@ -31,7 +32,7 @@ const LoginPage = () => {
           {" "}
           {/* Add a container div */}
           <img
-            src={loginimage}
+            src={isNonMobile ? loginimage : compressed_loginimage}
             alt="login"
             className="zoomed-image"
             style={{

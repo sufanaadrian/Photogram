@@ -29,7 +29,7 @@ import {
 import FlexBetween from "components/FlexBetween";
 import UploadDetails from "components/PhotoUpload";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
@@ -86,6 +86,7 @@ const PostWidget = ({
   const navigate = useNavigate();
   let initialScrollPosition = window.scrollY;
   const SCROLL_THRESHOLD = 100;
+  const timerRef = useRef(null); // Ref to hold the timer ID
   useEffect(() => {
     const imgElement = document.querySelector(".post-image");
     setOriginalWidth(imgElement.offsetWidth);
@@ -139,6 +140,19 @@ const PostWidget = ({
     setIsEditing(false);
     setIsEditingCategory(false);
   };
+  const handleMouseLeave = () => {
+    // Start the timer to close the menu after 2 seconds
+    timerRef.current = setTimeout(() => {
+      setIsMenuVisible(false);
+    }, 1000);
+  };
+
+  const handleMouseEnter = () => {
+    // If the menu is going to close due to the timer, clear the timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
   const handleCommentsMenuClick = (event) => {
     setAnchorComments(event.currentTarget);
     setIsComments(!isComments);
@@ -165,6 +179,7 @@ const PostWidget = ({
       if (response.ok) {
         // Call the getUserPosts function to refetch the updated list of posts
         getUserPosts(dispatch, token, loggedInUserId);
+        setIsMenuVisible(!isMenuVisible);
       }
     } catch (error) {
       console.error(error);
@@ -179,6 +194,7 @@ const PostWidget = ({
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
+    setIsMenuVisible(!isMenuVisible);
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
@@ -193,6 +209,7 @@ const PostWidget = ({
       },
       body: JSON.stringify({ isSharable: true }),
     });
+    setIsMenuVisible(!isMenuVisible);
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
@@ -206,6 +223,7 @@ const PostWidget = ({
       body: JSON.stringify({ isSharable: false }),
     });
     const updatedPost = await response.json();
+    setIsMenuVisible(!isMenuVisible);
     dispatch(setPost({ post: updatedPost }));
     if (!regex.test(window.location.pathname)) {
       window.location.reload();
@@ -266,6 +284,7 @@ const PostWidget = ({
   };
   const handleSaveClick = () => {
     const url = `${BASE_URL}/assets/${picturePath}`;
+    setIsMenuVisible(!isMenuVisible);
 
     fetch(url)
       .then((response) => response.blob())
@@ -286,10 +305,8 @@ const PostWidget = ({
       m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0rem  0.1rem 0rem 0.1rem"}
       tag="gallery"
       // onMouseEnter={() => setShowIconButton(true)}
-      onMouseLeave={() => {
-        // setShowIconButton(false);
-        // setIsMenuVisible(false);
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <UploadDetails
         style={{ position: "absolute", top: 0, left: 0 }}

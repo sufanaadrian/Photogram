@@ -11,6 +11,7 @@ import { ArrowLeftOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import contactimage from "../../assets/contactimage.jpg";
+import compressed_contactimage from "../../assets/contactimage-min.jpg";
 
 const ContactPage = () => {
   const theme = useTheme();
@@ -38,7 +39,7 @@ const ContactPage = () => {
           {" "}
           {/* Add a container div */}
           <img
-            src={contactimage}
+            src={isNonMobile ? contactimage : compressed_contactimage}
             alt="login"
             className="zoomed-image"
             style={{
