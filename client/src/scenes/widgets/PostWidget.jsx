@@ -130,6 +130,9 @@ const PostWidget = ({
     setShowExifData(!showExifData);
     setIsMenuVisible(!isMenuVisible);
   };
+  const handleDetailsClickSmallGrid = () => {
+    toggleFullScreen();
+  };
   const toggleFullScreen = () => {
     setIsMenuVisible(false);
     setIsFullScreen(!isFullScreen);
@@ -845,6 +848,14 @@ const PostWidget = ({
                 )}
                 {!isLargeGrid && (
                   <ListItem onClick={handleDetailsClick}>
+                    <ListItemIcon>
+                      <InfoOutlined fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Details</ListItemText>
+                  </ListItem>
+                )}
+                {isLargeGrid && (
+                  <ListItem onClick={handleDetailsClickSmallGrid}>
                     <ListItemIcon>
                       <InfoOutlined fontSize="small" />
                     </ListItemIcon>

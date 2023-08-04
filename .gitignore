@@ -3,7 +3,7 @@ MERN-gallery/
 node-modules/
 
 node_modules/
-
+client/src/config.js
 # dependencies
 /node_modules
 /.pnp
