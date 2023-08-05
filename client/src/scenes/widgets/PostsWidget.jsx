@@ -11,12 +11,16 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
   const token = useSelector((state) => state.token);
   const regex = /\/all/; // Update the regex to check for "/all" page
   const [page, setPage] = useState(1);
+  const loggedInUserId = useSelector((state) =>
+    state.user ? state.user : "standard"
+  );
   let postsPerPage;
   let isLargeGrid;
   let isProfile;
   if (xl === 2) {
     postsPerPage = 12;
     isLargeGrid = false;
+    console.log(loggedInUserId.role);
   } else {
     postsPerPage = 1000;
     isLargeGrid = true;
@@ -224,6 +228,7 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
                   isProfile={isProfile}
                   dominantColors={dominantColors}
                   imageType={imageType}
+                  role={loggedInUserId.role}
                 />
               </Col>
             )

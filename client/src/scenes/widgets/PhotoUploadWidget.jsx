@@ -13,6 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { getUserPosts } from "components/api";
+import { getPostsAll } from "components/api";
 import FlexBetween from "components/FlexBetween";
 import Dropzone from "react-dropzone";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -110,7 +111,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
     setImages([]);
     setDescriptions([]);
     setPost("");
-    getUserPosts(dispatch, token, userId);
+    getPostsAll(dispatch);
   };
   const removeImage = (index) => {
     const newImages = [...images];
@@ -121,7 +122,7 @@ const MyPostWidget = ({ picturePath, userId }) => {
     setDescriptions(newDescriptions);
   };
   useEffect(() => {
-    getUserPosts(dispatch, token, userId);
+    getPostsAll(dispatch);
   });
 
   return (

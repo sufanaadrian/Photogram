@@ -16,6 +16,9 @@ const PostsWidgetOnlyShared = ({
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
   const [page, setPage] = useState(1);
+  const loggedInUserId = useSelector((state) =>
+    state.user ? state.user : "standard"
+  );
   let postsPerPage;
   let isLargeGrid;
 
@@ -207,6 +210,7 @@ const PostsWidgetOnlyShared = ({
                   isLargeGrid={isLargeGrid}
                   dominantColors={dominantColors}
                   imageType={imageType}
+                  role={loggedInUserId.role}
                 />
               </Col>
             )

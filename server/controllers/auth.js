@@ -50,9 +50,14 @@ export const loginFunc = async (req, res) => {
     if (!credentialsMatch)
       return res.status(400).json({ msg: "Invalid credentials. " });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    // Set the isAdmin flag based on the user's role
+    const isAdmin = user.role === "admin";
+
+    const token = jwt.sign({ id: user._id, isAdmin }, process.env.JWT_SECRET);
     delete user.password;
-    res.status(200).json({ token, user });
+
+    // Return the isAdmin flag along with the token and user data
+    res.status(200).json({ token, user, isAdmin });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
 import { getUserPosts } from "components/api";
+import { getPostsAll } from "components/api";
 import BASE_URL from "../../config";
 const PostWidget_Highlights = ({
   postId,
@@ -53,6 +54,7 @@ const PostWidget_Highlights = ({
   isProfile,
   dominantColors,
   imageType,
+  role,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -64,6 +66,8 @@ const PostWidget_Highlights = ({
   const likeCount = Object.keys(likes).length;
   const { palette } = useTheme();
   const main = palette.neutral.main;
+  const isAdmin = role === "admin";
+
   const primary = palette.primary.main;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const [menuVisibility, setMenuVisibility] = useState({});
@@ -175,7 +179,7 @@ const PostWidget_Highlights = ({
       });
       if (response.ok) {
         // Call the getUserPosts function to refetch the updated list of posts
-        getUserPosts(dispatch, token, loggedInUserId);
+        getPostsAll(dispatch);
         setIsMenuVisible(!isMenuVisible);
       }
     } catch (error) {
@@ -588,7 +592,7 @@ const PostWidget_Highlights = ({
           >
             <Paper>
               <List>
-                {!isSharable && postUserId === loggedInUserId && (
+                {!isSharable && isAdmin && (
                   <ListItem onClick={patchSharable}>
                     <ListItemIcon>
                       <ShareOutlined fontSize="small" />
@@ -596,7 +600,7 @@ const PostWidget_Highlights = ({
                     <ListItemText>Share on feed</ListItemText>
                   </ListItem>
                 )}
-                {isSharable && postUserId === loggedInUserId && (
+                {isSharable && isAdmin && (
                   <ListItem onClick={patchSharableFalse}>
                     <ListItemIcon>
                       <RemoveCircleOutlined fontSize="small" />
@@ -604,7 +608,7 @@ const PostWidget_Highlights = ({
                     <ListItemText>Remove from feed</ListItemText>
                   </ListItem>
                 )}
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem onClick={handleEditLocation}>
                     <ListItemIcon>
                       <EditLocationAltOutlined fontSize="small" />
@@ -613,7 +617,7 @@ const PostWidget_Highlights = ({
                   </ListItem>
                 )}
 
-                {isEditing && postUserId === loggedInUserId && (
+                {isAdmin && (
                   <div className="edit-location-container">
                     <input
                       type="text"
@@ -629,7 +633,7 @@ const PostWidget_Highlights = ({
                     </button>
                   </div>
                 )}
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem onClick={handleEditCategory}>
                     <ListItemIcon>
                       <CategoryOutlined fontSize="small" />
@@ -637,7 +641,7 @@ const PostWidget_Highlights = ({
                     <ListItemText>Edit category</ListItemText>
                   </ListItem>
                 )}
-                {isEditingCategory && postUserId === loggedInUserId && (
+                {isEditingCategory && isAdmin && (
                   <div className="edit-imageType-container">
                     <select
                       value={selectedImageType}
@@ -678,7 +682,7 @@ const PostWidget_Highlights = ({
                   </ListItemIcon>
                   <ListItemText>Save</ListItemText>
                 </ListItem>
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem
                     onClick={handleDeleteClick}
                     style={{ color: "red" }}

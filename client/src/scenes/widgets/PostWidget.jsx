@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
 import { getUserPosts } from "components/api";
+import { getPostsAll } from "components/api";
 import BASE_URL from "../../config";
 const PostWidget = ({
   postId,
@@ -53,6 +54,7 @@ const PostWidget = ({
   isProfile,
   dominantColors,
   imageType,
+  role,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -66,7 +68,7 @@ const PostWidget = ({
   const main = palette.neutral.main;
   const primary = palette.primary.main;
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
+  const isAdmin = role === "admin";
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [originalWidth, setOriginalWidth] = useState(0);
   const [originalHeight, setOriginalHeight] = useState(0);
@@ -181,7 +183,7 @@ const PostWidget = ({
       });
       if (response.ok) {
         // Call the getUserPosts function to refetch the updated list of posts
-        getUserPosts(dispatch, token, loggedInUserId);
+        getPostsAll(dispatch);
         setIsMenuVisible(!isMenuVisible);
       }
     } catch (error) {
@@ -311,7 +313,7 @@ const PostWidget = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <UploadDetails
+      {/* <UploadDetails
         style={{ position: "absolute", top: 0, left: 0 }}
         friendId={postUserId}
         name={name}
@@ -331,7 +333,7 @@ const PostWidget = ({
         }
         userPicturePath={userPicturePath}
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
-      />
+      /> */}
 
       <div style={{ position: "relative" }}>
         <div
@@ -772,7 +774,7 @@ const PostWidget = ({
           >
             <Paper>
               <List>
-                {!isSharable && postUserId === loggedInUserId && (
+                {!isSharable && isAdmin && (
                   <ListItem onClick={patchSharable}>
                     <ListItemIcon>
                       <ShareOutlined fontSize="small" />
@@ -780,7 +782,7 @@ const PostWidget = ({
                     <ListItemText>Share on feed</ListItemText>
                   </ListItem>
                 )}
-                {isSharable && postUserId === loggedInUserId && (
+                {isSharable && isAdmin && (
                   <ListItem onClick={patchSharableFalse}>
                     <ListItemIcon>
                       <RemoveCircleOutlined fontSize="small" />
@@ -788,7 +790,7 @@ const PostWidget = ({
                     <ListItemText>Remove from feed</ListItemText>
                   </ListItem>
                 )}
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem onClick={handleEditLocation}>
                     <ListItemIcon>
                       <EditLocationAltOutlined fontSize="small" />
@@ -796,7 +798,7 @@ const PostWidget = ({
                     <ListItemText>Edit location</ListItemText>
                   </ListItem>
                 )}
-                {isEditing && postUserId === loggedInUserId && (
+                {isEditing && isAdmin && (
                   <div className="edit-location-container">
                     <input
                       type="text"
@@ -812,7 +814,7 @@ const PostWidget = ({
                     </button>
                   </div>
                 )}
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem onClick={handleEditCategory}>
                     <ListItemIcon>
                       <CategoryOutlined fontSize="small" />
@@ -820,7 +822,7 @@ const PostWidget = ({
                     <ListItemText>Edit category</ListItemText>
                   </ListItem>
                 )}
-                {isEditingCategory && postUserId === loggedInUserId && (
+                {isEditingCategory && isAdmin && (
                   <div className="edit-imageType-container">
                     <select
                       value={selectedImageType}
@@ -868,7 +870,7 @@ const PostWidget = ({
                   </ListItemIcon>
                   <ListItemText>Save</ListItemText>
                 </ListItem>
-                {postUserId === loggedInUserId && (
+                {isAdmin && (
                   <ListItem
                     onClick={handleDeleteClick}
                     style={{ color: "red" }}

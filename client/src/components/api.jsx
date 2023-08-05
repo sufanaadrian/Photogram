@@ -21,7 +21,6 @@ export const getUserPosts = async (dispatch, token, userId) => {
 export const getPostsAll = async (dispatch) => {
   const response = await fetch(`${BASE_URL}/posts/all`);
   const data = await response.json();
-
   dispatch(setPosts({ posts: data }));
 };
 

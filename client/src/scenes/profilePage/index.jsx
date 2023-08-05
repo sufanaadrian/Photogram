@@ -15,7 +15,9 @@ const ProfilePage = () => {
   const token = useSelector((state) => state.token);
   const userIdCoded = "64bc0534c39d385c73c1310b"; // Hardcoded userId  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:600px)");
-  const loggedInUserId = useSelector((state) => state.user?._id ?? null);
+  const loggedInUserId = useSelector((state) => state.user ?? null);
+  const loggedInUser = useSelector((state) => state.user ?? "standard");
+  const isAdmin = loggedInUser.role === "admin";
   const [sortCriteria, setSortCriteria] = useState("all");
   const [filterCriteria, setFilterCriteria] = useState("all");
   const [colorCriteria, setColorCriteria] = useState("all");
@@ -72,7 +74,7 @@ const ProfilePage = () => {
           <Box pb="1rem" />
 
           <div className="sticky">
-            {loggedInUserId && <PhotoUploadWidget userId={loggedInUserId} />}{" "}
+            {isAdmin && <PhotoUploadWidget userId={loggedInUserId} />}{" "}
             <Box mb="1rem" />
             <UserWidget
               userId={userIdCoded}
