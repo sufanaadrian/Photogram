@@ -54,7 +54,7 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="contentVideo">
-        <Typography fontWeight="bold" fontSize={isNonMobile ? "120px" : "70px"}>
+        <Typography fontWeight="bold" fontSize={isNonMobile ? "120px" : "50px"}>
           SA-Visuals
         </Typography>
 

@@ -302,7 +302,7 @@ const PostWidget_Highlights = ({
 
   return (
     <WidgetWrapper
-      m={!isLargeGrid ? "0.5rem 0 0.5rem 0" : "0.1rem 0 0.1rem 0"}
+      m={!isLargeGrid ? "0.5rem 0 1rem 0" : "0.1rem 0 1rem 0"}
       tag="gallery"
       onMouseEnter={() => handleMouseEnter()}
       onMouseLeave={() => {
@@ -310,12 +310,13 @@ const PostWidget_Highlights = ({
         handleMouseLeave();
       }}
     >
+      {/* {(isLargeGrid || isNonMobileScreens) && ( */}
       <UploadDetails
         style={{ position: "absolute", top: 0, left: 0 }}
         friendId={postUserId}
         name={name}
         subtitle={
-          (isLargeGrid || isNonMobileScreens) && (
+          isLargeGrid || isNonMobileScreens ? (
             <>
               Shot on: {exifDataObject.Make} {exifDataObject.Model}
               <div style={{ lineHeight: "0.5", whiteSpace: "pre" }}>
@@ -328,11 +329,16 @@ const PostWidget_Highlights = ({
                   : exifDataObject.undefined}
               </div>
             </>
+          ) : (
+            <>
+              {exifDataObject.Make} {exifDataObject.Model}
+            </>
           )
         }
         userPicturePath={userPicturePath}
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
       />
+      {/* )} */}
 
       <div style={{ position: "relative" }}>
         <div
@@ -617,7 +623,7 @@ const PostWidget_Highlights = ({
                   </ListItem>
                 )}
 
-                {isAdmin && (
+                {isEditing && isAdmin && (
                   <div className="edit-location-container">
                     <input
                       type="text"

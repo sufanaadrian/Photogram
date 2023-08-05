@@ -140,7 +140,7 @@ const Navbar = () => {
         <Box
           position="fixed"
           right="0"
-          bottom="0"
+          top="0"
           height="100%"
           zIndex="10"
           maxWidth="300px"

@@ -165,7 +165,7 @@ const PostsWidgetOnlyShared = ({
   return (
     <>
       <Container>
-        <Row style={{ width: "100%" }}>
+        <Row>
           {filteredAndSortedPosts.map(
             ({
               _id,

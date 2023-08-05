@@ -125,7 +125,7 @@ const Form = () => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
-          {isRegister && (
+          {/* {isRegister && (
             <Box
               sx={{
                 textAlign: "center",
@@ -140,7 +140,7 @@ const Form = () => {
                 Account registration is disabled temporarily.
               </Typography>
             </Box>
-          )}
+          )} */}
 
           <Box
             display="grid"

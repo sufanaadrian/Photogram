@@ -29,24 +29,28 @@ const HomePage = () => {
           <Box m="2rem 0" />
         </Box>
         <Box
-          padding={isNonMobileScreens ? "2.5rem 1%" : "0rem"}
+          // padding={isNonMobileScreens ? "2.5rem 1%" : "0rem"}
           flexBasis={isNonMobileScreens ? "70%" : "50%"}
           width={isNonMobileScreens ? undefined : "100%"}
-          ml={isNonMobileScreens ? undefined : "1rem"}
-          mt={isNonMobileScreens ? undefined : "0rem"}
+          // ml={isNonMobileScreens ? undefined : "1rem"}
+          mt={isNonMobileScreens ? "2.5rem" : "0rem"}
         >
-          <SortMenu
-            onSortCriteriaChange={setSortCriteria}
-            onFilterCriteriaChange={setFilterCriteria}
-            onColorCriteriaChange={setColorCriteria}
-            onXLChange={setXl}
-          />
-          <PostsWidgetOnlyShared
-            sortCriteria={sortCriteria}
-            filterCriteria={filterCriteria}
-            colorCriteria={colorCriteria}
-            xl={xl}
-          />
+          <Box mb="1rem">
+            <SortMenu
+              onSortCriteriaChange={setSortCriteria}
+              onFilterCriteriaChange={setFilterCriteria}
+              onColorCriteriaChange={setColorCriteria}
+              onXLChange={setXl}
+            />
+          </Box>
+          <Box>
+            <PostsWidgetOnlyShared
+              sortCriteria={sortCriteria}
+              filterCriteria={filterCriteria}
+              colorCriteria={colorCriteria}
+              xl={xl}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>

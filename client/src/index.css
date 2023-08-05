@@ -11,6 +11,7 @@ body,
 .MuiPopover-root .MuiMenu-paper {
   opacity: 0.5 !important;
 }
+
 .sticky {
   position: sticky;
   top: 0;
