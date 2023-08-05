@@ -3,8 +3,6 @@ MERN-gallery/
 node-modules/
 
 node_modules/
-client/src/config.js
-config.js
 updateDBdata.js
 /server/updateDBdata.js
 # dependencies
