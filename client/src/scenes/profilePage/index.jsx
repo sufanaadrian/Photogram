@@ -89,13 +89,14 @@ const ProfilePage = () => {
             xl === 2 ? (isNonMobileScreens ? undefined : "100%") : undefined
           }
         >
-          <SortMenu
-            onSortCriteriaChange={setSortCriteria}
-            onFilterCriteriaChange={setFilterCriteria}
-            onColorCriteriaChange={setColorCriteria}
-            onXLChange={setXl}
-          />
-
+          <Box mt="1rem" marginBottom={2}>
+            <SortMenu
+              onSortCriteriaChange={setSortCriteria}
+              onFilterCriteriaChange={setFilterCriteria}
+              onColorCriteriaChange={setColorCriteria}
+              onXLChange={setXl}
+            />
+          </Box>
           <PostsWidget
             sortCriteria={sortCriteria}
             filterCriteria={filterCriteria}

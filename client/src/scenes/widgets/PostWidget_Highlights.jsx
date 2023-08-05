@@ -10,6 +10,7 @@ import {
   FileDownloadOutlined,
   EditLocationAltOutlined,
   CategoryOutlined,
+  Close,
 } from "@mui/icons-material";
 import {
   Box,
@@ -345,6 +346,31 @@ const PostWidget_Highlights = ({
           className={isFullScreen ? "full-screen" : ""}
           onClick={toggleFullScreen}
         >
+          {isFullScreen && (
+            <Box
+              position="absolute"
+              top="0"
+              right={isNonMobileScreens ? "2rem" : "0.5rem"}
+              pt="5rem"
+              color={palette.primary.dark}
+              zIndex="2" // Ensure the button is above the image
+            >
+              <Box
+                value="Close"
+                sx={{
+                  "&:hover": {
+                    color: "red",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    transform: "scale(1.4) rotate(180deg)",
+                  },
+                }}
+                onClick={() => setIsFullScreen(false)}
+              >
+                <Close sx={{ fontSize: "25px" }} />
+              </Box>
+            </Box>
+          )}
           <img
             className="post-image"
             width={isFullScreen ? originalWidth : "100%"}
@@ -359,6 +385,7 @@ const PostWidget_Highlights = ({
             src={`${BASE_URL}/assets/${picturePath}`}
           />
         </div>
+
         {isLargeGrid && (
           <div
             style={{
