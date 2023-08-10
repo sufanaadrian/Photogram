@@ -24,6 +24,8 @@ import {
   List,
   Popper,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import FlexBetween from "components/FlexBetween";
@@ -82,7 +84,15 @@ const PostWidget = ({
   const [newLocation, setNewLocation] = useState(description);
   const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState("");
-
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState(""); // You can set the severity based on the action
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
+  };
   const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
@@ -191,17 +201,49 @@ const PostWidget = ({
     }
   };
   const patchLike = async () => {
-    const response = await fetch(`${BASE_URL}/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    setIsMenuVisible(!isMenuVisible);
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    if (!loggedInUserId) {
+      setSnackbarMessage("Log in if you want to add this image to favorites!");
+      setSnackbarSeverity("error");
+      setShowSnackbar(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}/like`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      });
+
+      if (!response.ok) {
+        // Handle other error cases if needed
+        console.error("Error:", response.statusText);
+        return;
+      }
+
+      const responseData = await response.json(); // Extract JSON data from response
+      const { action } = responseData; // Access the action property from the extracted data
+
+      console.log(action);
+
+      if (action === "liked") {
+        setSnackbarMessage("Image added to favorites!");
+        setSnackbarSeverity("success");
+      } else {
+        setSnackbarMessage("Image removed from favorites!");
+        setSnackbarSeverity("error");
+      }
+
+      setShowSnackbar(true);
+
+      const updatedPost = responseData.updatedPost; // Access other properties if needed
+      dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const patchSharable = async () => {
@@ -334,7 +376,6 @@ const PostWidget = ({
         userPicturePath={userPicturePath}
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
       /> */}
-
       <div style={{ position: "relative" }}>
         <div
           className={isFullScreen ? "full-screen" : ""}
@@ -934,6 +975,21 @@ const PostWidget = ({
           </Paper>
         </Popper>
       </div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          elevation={6}
+          variant="filled"
+          severity={snackbarSeverity}
+          onClose={handleCloseSnackbar}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </WidgetWrapper>
   );
 };

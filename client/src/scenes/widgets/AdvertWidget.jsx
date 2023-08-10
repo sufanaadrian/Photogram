@@ -10,17 +10,21 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import BASE_URL from "../../config";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 const AdvertWidget = () => {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
   const primaryDarkColor = palette.primary.dark;
+  const [user, setUser] = useState(null);
+
   const alt = palette.background.alt;
   const navigate = useNavigate();
   const theme = useTheme();
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
+  const loggedInUserId = useSelector((state) => state.user?._id ?? null);
 
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const scrollToForm = () => {
@@ -29,6 +33,34 @@ const AdvertWidget = () => {
       behavior: "smooth",
     });
   };
+  const getUser = async () => {
+    if (!loggedInUserId) {
+      console.log("User is not logged in");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/users/${loggedInUserId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data);
+      } else {
+        console.log("Error fetching user data:", response.statusText);
+      }
+    } catch (error) {
+      console.log("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [loggedInUserId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!user) {
+    setUser("undefined");
+  }
+
+  const { firstName, lastName, location, cameraBody, cameraLens } = user || {};
   return (
     <>
       {isNonMobileScreens && (
@@ -62,9 +94,16 @@ const AdvertWidget = () => {
         >
           {!isProfileDropdown && (
             <Box>
-              <Typography variant="h4" fontWeight="bold" mb={2}>
-                Hello!
-              </Typography>
+              {loggedInUserId ? (
+                <Typography variant="h4" fontWeight="bold" mb={2}>
+                  Hello {firstName}
+                </Typography>
+              ) : (
+                <Typography variant="h4" fontWeight="bold" mb={2}>
+                  Hello
+                </Typography>
+              )}
+
               <img
                 src={`${BASE_URL}/assets/final_logo.png`}
                 alt="Gallery Advert"

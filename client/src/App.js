@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
+import LikedImgPage from "scenes/likedImages";
 import LoginPage from "scenes/loginPage";
 import ContactPage from "scenes/contactPage";
 import ProfilePage from "scenes/profilePage";
@@ -35,6 +36,7 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route path="/all" element={<ProfilePage />} />
+            <Route path="/liked-images" element={<LikedImgPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>

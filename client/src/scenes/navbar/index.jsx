@@ -10,6 +10,7 @@ import {
   Menu,
   Close,
   ArrowBack,
+  FavoriteBorderOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -35,6 +36,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAllPath = /^\/all($|\/)/.test(window.location.pathname);
+  const isLikedImgPath = /^\/liked-images($|\/)/.test(window.location.pathname);
   const theme = useTheme();
   const darkColor = theme.palette.neutral.dark;
   const backgroundColor = theme.palette.background.default;
@@ -46,7 +48,7 @@ const Navbar = () => {
       backgroundColor={alternativeColor}
     >
       <FlexBetween gap="1.75rem">
-        {isAllPath ? (
+        {isAllPath || isLikedImgPath ? (
           <Box>
             <Typography
               color="primary"
@@ -109,6 +111,15 @@ const Navbar = () => {
             ></CollectionsOutlined>
             <Typography>Gallery</Typography>
           </MenuItem>
+          {loggedInUserId !== null && (
+            <MenuItem value="Contact" onClick={() => navigate(`/liked-images`)}>
+              <FavoriteBorderOutlined
+                sx={{ fontSize: "35px" }}
+              ></FavoriteBorderOutlined>
+              <Typography>Favorites</Typography>
+            </MenuItem>
+          )}
+
           <MenuItem value="Contact" onClick={() => navigate(`/contact`)}>
             <Email sx={{ fontSize: "35px" }}></Email>
             <Typography>Contact</Typography>
@@ -155,6 +166,15 @@ const Navbar = () => {
               ></CollectionsOutlined>
               <Typography p="2rem 0rem">Gallery</Typography>
             </MenuItem>
+            {loggedInUserId !== null && (
+              <MenuItem value="Liked" onClick={() => navigate(`/liked-images`)}>
+                <FavoriteBorderOutlined
+                  sx={{ fontSize: "35px" }}
+                ></FavoriteBorderOutlined>
+                <Typography p="2rem 0rem">Favorites</Typography>
+              </MenuItem>
+            )}
+
             <MenuItem value="Contact" onClick={() => navigate(`/contact`)}>
               <Email sx={{ fontSize: "35px" }}></Email>
               <Typography p="2rem 0rem">Contact</Typography>

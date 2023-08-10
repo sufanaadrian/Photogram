@@ -24,6 +24,15 @@ export const getPostsAll = async (dispatch) => {
   dispatch(setPosts({ posts: data }));
 };
 
+export const getLikedPosts = async (dispatch, userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/posts/${userId}/liked-images`);
+    const data = await response.json();
+    dispatch(setPosts({ posts: data }));
+  } catch (error) {
+    console.log("Error on client side: ", error);
+  }
+};
 export const generatePDF = async (token, loggedInUserId) => {
   // const response = await fetch(`${BASE_URL}/posts/${loggedInUserId}/posts`, {
   //   method: "GET",

@@ -11,6 +11,7 @@ import {
   EditLocationAltOutlined,
   CategoryOutlined,
   Close,
+  RepeatOneSharp,
 } from "@mui/icons-material";
 import {
   Box,
@@ -25,6 +26,8 @@ import {
   List,
   Popper,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import FlexBetween from "components/FlexBetween";
@@ -84,7 +87,15 @@ const PostWidget_Highlights = ({
   const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState("");
   const [newLocation, setNewLocation] = useState(description);
-
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState(""); // You can set the severity based on the action
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
+  };
   const regex = /\/all/;
   const exifDataObject = JSON.parse(exifData);
   const navigate = useNavigate();
@@ -188,16 +199,49 @@ const PostWidget_Highlights = ({
     }
   };
   const patchLike = async () => {
-    const response = await fetch(`${BASE_URL}/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    if (!loggedInUserId) {
+      setSnackbarMessage("Log in if you want to add this image to favorites!");
+      setSnackbarSeverity("error");
+      setShowSnackbar(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}/like`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      });
+
+      if (!response.ok) {
+        // Handle other error cases if needed
+        console.error("Error:", response.statusText);
+        return;
+      }
+
+      const responseData = await response.json(); // Extract JSON data from response
+      const { action } = responseData; // Access the action property from the extracted data
+
+      console.log(action);
+
+      if (action === "liked") {
+        setSnackbarMessage("Image added to favorites!");
+        setSnackbarSeverity("success");
+      } else {
+        setSnackbarMessage("Image removed from favorites!");
+        setSnackbarSeverity("error");
+      }
+
+      setShowSnackbar(true);
+
+      const updatedPost = responseData.updatedPost; // Access other properties if needed
+      dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const patchSharable = async () => {
@@ -386,18 +430,17 @@ const PostWidget_Highlights = ({
           />
         </div>
 
-        {isLargeGrid && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "13%",
-              background: "rgba(0,0,0,0.6)",
-            }}
-          />
-        )}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "13%",
+            background: "rgba(0,0,0,0.6)",
+          }}
+        />
+
         {isSharable === true && (
           <Typography
             style={{ position: "absolute", top: 0, right: 3, color: "white" }}
@@ -539,57 +582,57 @@ const PostWidget_Highlights = ({
             </ListItem>
           </List>
         )}
-        {isLargeGrid && (
-          <Box>
-            <Typography
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                marginBottom: "2.5rem",
-                color: "white",
-                fontSize: "small",
-                fontWeight: "500",
-              }}
-              color={main}
-              sx={{ ml: "0.5rem" }}
-            >
-              {newLocation === "undefined" ? "" : newLocation}
-            </Typography>
-            <FlexBetween
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                marginBottom: "0.2rem",
-                color: "white",
-              }}
-            >
-              <FlexBetween gap="0.1rem">
-                <FlexBetween>
-                  <IconButton onClick={patchLike} style={{ color: "white" }}>
-                    {isLiked ? (
-                      <FavoriteOutlined sx={{ color: primary }} />
-                    ) : (
-                      <FavoriteBorderOutlined />
-                    )}
-                  </IconButton>
-                  <Typography>{likeCount}</Typography>
-                </FlexBetween>
 
-                <FlexBetween gap="0.2rem">
-                  <IconButton
-                    onClick={handleCommentsMenuClick}
-                    style={{ color: "white" }}
-                  >
-                    <ChatBubbleOutlineOutlined />
-                  </IconButton>
-                  <Typography m="0px 1rem 0 0">{comments.length}</Typography>
-                </FlexBetween>
+        <Box>
+          <Typography
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              marginBottom: "2.5rem",
+              color: "white",
+              fontSize: isLargeGrid ? "small" : "smaller",
+              fontWeight: "500",
+            }}
+            color={main}
+            sx={{ ml: "0.5rem" }}
+          >
+            {newLocation === "undefined" ? "" : newLocation}
+          </Typography>
+          <FlexBetween
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              marginBottom: "0.2rem",
+              color: "white",
+            }}
+          >
+            <FlexBetween gap="0.1rem">
+              <FlexBetween>
+                <IconButton onClick={patchLike} style={{ color: "white" }}>
+                  {isLiked ? (
+                    <FavoriteOutlined sx={{ color: primary }} />
+                  ) : (
+                    <FavoriteBorderOutlined />
+                  )}
+                </IconButton>
+                <Typography>{likeCount}</Typography>
+              </FlexBetween>
+
+              <FlexBetween gap="0.2rem">
+                <IconButton
+                  onClick={handleCommentsMenuClick}
+                  style={{ color: "white" }}
+                >
+                  <ChatBubbleOutlineOutlined />
+                </IconButton>
+                <Typography m="0px 1rem 0 0">{comments.length}</Typography>
               </FlexBetween>
             </FlexBetween>
-          </Box>
-        )}
+          </FlexBetween>
+        </Box>
+
         <div
           style={{
             position: "absolute",
@@ -778,6 +821,21 @@ const PostWidget_Highlights = ({
           </Paper>
         </Popper>
       </div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          elevation={6}
+          variant="filled"
+          severity={snackbarSeverity}
+          onClose={handleCloseSnackbar}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </WidgetWrapper>
   );
 };

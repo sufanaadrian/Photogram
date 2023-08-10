@@ -2,6 +2,7 @@ import express from "express";
 import {
   getPostsFromFeedFunc,
   getPostsByUserFunc,
+  getLikedPostsByUserFunc,
   getAllPostsFunc,
   likePostFromFeedFunc,
   sharePostInFeedFunc,
@@ -18,9 +19,9 @@ const router = express.Router();
 router.get("/", getPostsFromFeedFunc);
 router.get("/:userId/posts", getPostsByUserFunc);
 router.get("/all", getAllPostsFunc); // New route to fetch all posts
-
+router.get("/:userId/liked-images", getLikedPostsByUserFunc);
 /* UPDATE */
-router.patch("/:id/like", verifyWithToken, likePostFromFeedFunc);
+router.patch("/:id/like", likePostFromFeedFunc);
 router.patch("/:id/share", verifyWithToken, sharePostInFeedFunc);
 router.patch("/:id/editLocation", verifyWithToken, editLocationFunc);
 router.patch("/:id/editCategory", verifyWithToken, editCategoryFunc);
