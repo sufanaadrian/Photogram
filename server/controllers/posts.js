@@ -64,6 +64,32 @@ export const getLikedPostsByUserFunc = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// In your server-side code (controllers/posts.js)
+
+export const getLikedUsersByPostFunc = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+    const isLiked = post.likes.get(userId);
+    if (isLiked) {
+      return res.status(200).json({ message: "Post isliked" });
+    }
+    if (!post) {
+      return res.status(404).json({ message: "Post not found, strange" });
+    }
+
+    const likedUserIds = Array.from(post.likes.keys());
+
+    // Fetch user information for the liked user ids
+    const likedUsers = await User.find({ _id: { $in: likedUserIds } });
+
+    res.status(200).json(likedUsers);
+  } catch (err) {
+    console.log("Error on server side:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
 
 export const getAllPostsFunc = async (req, res) => {
   try {

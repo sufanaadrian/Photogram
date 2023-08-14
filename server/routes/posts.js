@@ -10,6 +10,7 @@ import {
   deletePostFunc,
   editLocationFunc,
   editCategoryFunc,
+  getLikedUsersByPostFunc,
 } from "../controllers/posts.js";
 import { verifyWithToken as verifyWithToken } from "../middleware/auth.js";
 
@@ -20,6 +21,7 @@ router.get("/", getPostsFromFeedFunc);
 router.get("/:userId/posts", getPostsByUserFunc);
 router.get("/all", getAllPostsFunc); // New route to fetch all posts
 router.get("/:userId/liked-images", getLikedPostsByUserFunc);
+router.get("/:id/postAppreciations", getLikedUsersByPostFunc);
 /* UPDATE */
 router.patch("/:id/like", likePostFromFeedFunc);
 router.patch("/:id/share", verifyWithToken, sharePostInFeedFunc);

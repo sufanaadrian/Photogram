@@ -191,9 +191,9 @@ const PostsWidgetOnlyLiked = ({
                 key={_id}
                 xs={xl === 2 ? 12 : 6}
                 sm={xl === 2 ? 6 : 3}
-                md={xl === 2 ? 3 : 2}
-                lg={xl === 2 ? 3 : xl}
-                xl={xl === 2 ? xl : 0.8}
+                md={xl === 2 ? 6 : 3}
+                lg={xl === 2 ? 6 : 3}
+                xl={xl === 2 ? 4 : 2}
               >
                 <PostWidget_Liked
                   postId={_id}

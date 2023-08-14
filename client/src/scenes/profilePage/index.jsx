@@ -84,7 +84,6 @@ const ProfilePage = () => {
           </div>
         </Box>
         <Box
-          ml={xl === 2 ? (isNonMobileScreens ? undefined : "1rem") : undefined}
           width={
             xl === 2 ? (isNonMobileScreens ? undefined : "100%") : undefined
           }

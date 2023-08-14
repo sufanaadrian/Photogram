@@ -178,10 +178,7 @@ const PostsWidget = ({ sortCriteria, filterCriteria, colorCriteria, xl }) => {
         Posts: {filteredAndSortedPosts.length}
       </div> */}
       <Container>
-        <Row
-          gutterWidth={isLargeGrid ? 0 : undefined}
-          style={{ width: "100%" }}
-        >
+        <Row gutterWidth={isLargeGrid ? 0 : undefined}>
           {paginatedPosts.map(
             ({
               _id,

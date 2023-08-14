@@ -10,6 +10,8 @@ import {
   FileDownloadOutlined,
   EditLocationAltOutlined,
   CategoryOutlined,
+  Close,
+  Info,
 } from "@mui/icons-material";
 import {
   Box,
@@ -36,7 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { useNavigate } from "react-router-dom";
 import { getUserPosts } from "components/api";
-import { getPostsAll } from "components/api";
+import { getPostsAll, getLikedUsersByPost } from "components/api";
 import BASE_URL from "../../config";
 const PostWidget = ({
   postId,
@@ -76,8 +78,11 @@ const PostWidget = ({
   const [originalHeight, setOriginalHeight] = useState(0);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [showExifData, setShowExifData] = useState(false);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorComments, setAnchorComments] = useState(null);
+  const [anchorLikes, setAnchorLikes] = useState(null);
+
   const [showIconButton, setShowIconButton] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // Track the currently selected image
@@ -87,6 +92,10 @@ const PostWidget = ({
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState(""); // You can set the severity based on the action
+  const [isLikes, setIsLikes] = useState(false);
+  const [likedUsers, setLikedUsers] = useState([]); // State to store liked users
+  const [isDetailsOpenOnFullScreen, setIsDetailsOpenOnFullScreen] =
+    useState(false);
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -114,10 +123,10 @@ const PostWidget = ({
       // close the menus
       if (
         scrollDifference >= SCROLL_THRESHOLD &&
-        (isMenuVisible || showExifData)
+        (isMenuVisible || showExifData || isLikes)
       ) {
         setIsMenuVisible(false);
-
+        setIsLikes(false);
         setShowExifData(false);
         setIsComments(false);
       }
@@ -138,9 +147,26 @@ const PostWidget = ({
     imageType,
     selectedImageType,
   ]);
+  const handleShowLikedUsers = async () => {
+    try {
+      if (likeCount !== 0) {
+        const users = await getLikedUsersByPost(postId); // Fetch liked users
+        setLikedUsers(users);
+      }
+      setIsMenuVisible(false);
+    } catch (error) {
+      console.error("Error fetching liked users:", error);
+    }
+  };
+  const handleLikeListClick = (event) => {
+    handleShowLikedUsers();
+    setAnchorLikes(event.currentTarget);
+    setIsLikes(!isLikes);
+  };
   const handleDetailsClick = () => {
     setShowExifData(!showExifData);
     setIsMenuVisible(!isMenuVisible);
+    setIsLikes(false);
   };
   const handleDetailsClickSmallGrid = () => {
     toggleFullScreen();
@@ -149,16 +175,22 @@ const PostWidget = ({
     setIsMenuVisible(false);
     setIsFullScreen(!isFullScreen);
   };
+  const toggleOffFullScreen = () => {
+    setIsFullScreen(false);
+    setIsDetailsOpenOnFullScreen(false);
+  };
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsMenuVisible(!isMenuVisible);
     setIsEditing(false);
+    setIsLikes(false);
     setIsEditingCategory(false);
   };
   const handleMouseLeave = () => {
     // Start the timer to close the menu after 2 seconds
     timerRef.current = setTimeout(() => {
       setIsMenuVisible(false);
+      setIsLikes(false);
     }, 1000);
   };
 
@@ -171,6 +203,9 @@ const PostWidget = ({
   const handleCommentsMenuClick = (event) => {
     setAnchorComments(event.currentTarget);
     setIsComments(!isComments);
+  };
+  const handleDetailsClickOnFullScreen = (event) => {
+    setIsDetailsOpenOnFullScreen(!isDetailsOpenOnFullScreen);
   };
   const handleEditLocation = () => {
     setIsEditing(!isEditing);
@@ -194,7 +229,8 @@ const PostWidget = ({
       if (response.ok) {
         // Call the getUserPosts function to refetch the updated list of posts
         getPostsAll(dispatch);
-        setIsMenuVisible(!isMenuVisible);
+        setIsMenuVisible(false);
+        setIsLikes(false);
       }
     } catch (error) {
       console.error(error);
@@ -377,13 +413,83 @@ const PostWidget = ({
         onClick={() => navigate(`/profile/${loggedInUserId}`)}
       /> */}
       <div style={{ position: "relative" }}>
-        <div
-          className={isFullScreen ? "full-screen" : ""}
-          onClick={toggleFullScreen}
-        >
+        <div className={isFullScreen ? "full-screen" : ""}>
+          {isFullScreen && (
+            <Box display="block">
+              <Box
+                position="absolute"
+                top="0"
+                right={isNonMobileScreens ? "2rem" : "0.5rem"}
+                mt="6rem"
+                backgroundColor="rgba(0,0,0,0.5)"
+                borderRadius="15%"
+                color={palette.primary.dark}
+                zIndex="2" // Ensure the button is above the image
+              >
+                <Box
+                  value="Close"
+                  sx={{
+                    "&:hover": {
+                      color: "red",
+                      cursor: "pointer",
+                      transition: "all 0.3s",
+                      transform: "scale(1.4) rotate(180deg)",
+                    },
+                  }}
+                  onClick={() => toggleOffFullScreen()}
+                >
+                  <Close
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      fontSize: "45px",
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                position="absolute"
+                top="0"
+                right={isNonMobileScreens ? "2rem" : "0.5rem"}
+                mt="10rem"
+                padding={0.5}
+                backgroundColor="rgba(0,0,0,0.5)"
+                color={palette.primary.dark}
+                zIndex="2" // Ensure the button is above the image
+              >
+                <Box
+                  value="Close"
+                  sx={{
+                    display: "flex",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: palette.primary.main,
+                      transition: "all 0.3s",
+                      transform: "scale(1.1) ",
+                    },
+                  }}
+                  onClick={handleDetailsClickOnFullScreen}
+                >
+                  <Info
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      fontSize: "25px",
+                    }}
+                  />
+                  <Typography fontSize="large">
+                    {isDetailsOpenOnFullScreen
+                      ? "Hide details"
+                      : "Show details"}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
           <img
             className="post-image"
             width={isFullScreen ? originalWidth : "100%"}
+            onClick={toggleFullScreen}
             height={
               isNonMobileScreens
                 ? isFullScreen
@@ -406,7 +512,7 @@ const PostWidget = ({
             }}
             src={`${BASE_URL}/assets/${picturePath}`}
           />
-          {isFullScreen && isLargeGrid && (
+          {isDetailsOpenOnFullScreen && isLargeGrid && (
             <div>
               <Typography
                 style={{
@@ -426,12 +532,13 @@ const PostWidget = ({
               <List
                 className="scrollbar"
                 style={{
-                  maxHeight: "90vh",
+                  maxHeight: "85vh",
                   overflow: "auto",
                   position: "absolute",
                   top: 0,
                   left: 0,
                   zIndex: 1,
+                  marginTop: "50px",
                   width: "100%",
                   color: "white",
                 }}
@@ -445,6 +552,7 @@ const PostWidget = ({
                           backgroundColor: !isNonMobileScreens
                             ? "rgba(0,0,0,0.5)"
                             : undefined,
+                          maxWidth: "55%",
                           padding: "0.3rem",
                           borderRadius: "0.5rem",
                           display: "block",
@@ -559,7 +667,41 @@ const PostWidget = ({
                         <FavoriteBorderOutlined />
                       )}
                     </IconButton>
-                    <Typography>{likeCount}</Typography>
+                    <IconButton onClick={handleLikeListClick}>
+                      <Typography>{likeCount}</Typography>
+                    </IconButton>
+                    <Popper
+                      anchorEl={anchorLikes}
+                      open={isLikes}
+                      placement="top-start" // Set the placement of the menu relative to the anchor element
+                      disablePortal={true} // Prevent the menu from being rendered in a separate portal element
+                      style={{
+                        zIndex: "1",
+                        opacity: "1",
+                        backgroundColor: "rgba(0,0,0,0.5",
+                        cursor: "pointer",
+                        maxHeight: "250px",
+                        overflow: "scroll",
+                      }}
+                    >
+                      <Paper>
+                        <List>
+                          <ListItem>
+                            <Typography>Liked by:</Typography>
+                          </ListItem>
+                          {likedUsers
+                            .slice()
+                            .reverse()
+                            .map((user, index) => (
+                              <ListItem key={index}>
+                                <Typography fontSize="smaller" lineHeight={0}>
+                                  {`${user.firstName} ${user.lastName}`}
+                                </Typography>
+                              </ListItem>
+                            ))}
+                        </List>
+                      </Paper>
+                    </Popper>{" "}
                   </FlexBetween>
 
                   <FlexBetween gap="0.2rem">
@@ -765,7 +907,41 @@ const PostWidget = ({
                       <FavoriteBorderOutlined />
                     )}
                   </IconButton>
-                  <Typography>{likeCount}</Typography>
+                  <IconButton onClick={handleLikeListClick}>
+                    <Typography>{likeCount}</Typography>
+                  </IconButton>
+                  <Popper
+                    anchorEl={anchorLikes}
+                    open={isLikes}
+                    placement="top-start" // Set the placement of the menu relative to the anchor element
+                    disablePortal={true} // Prevent the menu from being rendered in a separate portal element
+                    style={{
+                      zIndex: "1",
+                      opacity: "1",
+                      backgroundColor: "rgba(0,0,0,0.5",
+                      cursor: "pointer",
+                      maxHeight: "250px",
+                      overflow: "scroll",
+                    }}
+                  >
+                    <Paper>
+                      <List>
+                        <ListItem>
+                          <Typography>Liked by:</Typography>
+                        </ListItem>
+                        {likedUsers
+                          .slice()
+                          .reverse()
+                          .map((user, index) => (
+                            <ListItem key={index}>
+                              <Typography fontSize="smaller" lineHeight={0}>
+                                {`${user.firstName} ${user.lastName}`}
+                              </Typography>
+                            </ListItem>
+                          ))}
+                      </List>
+                    </Paper>
+                  </Popper>{" "}
                 </FlexBetween>
 
                 <FlexBetween gap="0.2rem">

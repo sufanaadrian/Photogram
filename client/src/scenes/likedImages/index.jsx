@@ -28,7 +28,10 @@ const LikedImgPage = () => {
         <Box pb="2rem" />
 
         <Box>
-          <Typography className="word">
+          <Typography
+            className="word"
+            mt={isNonMobileScreens ? "3rem" : undefined}
+          >
             <span>F</span>
             <span>A</span>
             <span>V</span>

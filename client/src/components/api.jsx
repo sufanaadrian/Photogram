@@ -33,6 +33,23 @@ export const getLikedPosts = async (dispatch, userId) => {
     console.log("Error on client side: ", error);
   }
 };
+export const getLikedUsersByPost = async (postId) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/posts/${postId}/postAppreciations`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data; // This will be an array of users who liked the post
+    } else {
+      console.error("Error fetching liked users:", response.statusText);
+      return []; // Return an empty array in case of an error
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return []; // Return an empty array in case of an error
+  }
+};
 export const generatePDF = async (token, loggedInUserId) => {
   // const response = await fetch(`${BASE_URL}/posts/${loggedInUserId}/posts`, {
   //   method: "GET",
