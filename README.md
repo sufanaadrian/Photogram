@@ -1,8 +1,8 @@
 # Photogram
 
-What is Photogram?
+What is SA-Visuals?
 
-Photogram is a web based application, developed on MERN stack, with an idea around photographers and their skills. It is mainly used for photo uploads inside a gallery, where photographers can sort/filter the images using the metadata that is automatically extracted from each image when it is uploaded. Also, there are 3 dominant colors extracted, which later can be used by the gallery owner to filter the images based on a selected color. This idea started from the personal need to evolve in photography skills.
+Photogram is a web-based application, developed on the MERN stack, with an idea around photographers and their skills. It is mainly used for photo uploads inside a gallery, where photographers can sort/filter the images using the metadata automatically extracted from each image when it is uploaded. Also, there are 3 dominant colors extracted, which later can be used by the gallery owner to filter the images based on a selected color. This idea started from the personal need to evolve photography skills for me and others.
 
 Login:
 ![Screenshot 2023-07-05 132736](https://github.com/sufanaadrian/APLICATIE-ORGANIZARE-POZE/assets/115484136/5eed9875-bbd8-4e79-aac6-08cd1f5eaa87)
@@ -20,3 +20,6 @@ Feed page:
 Filter form:
 
 ![filter menu](https://github.com/sufanaadrian/APLICATIE-ORGANIZARE-POZE/assets/115484136/d17a9d65-1097-47ed-8862-b29c72451dad)
+
+
+*The initial commit for this project represents the files from https://github.com/sufanaadrian/APLICATIE-ORGANIZARE-POZE.
