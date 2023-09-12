@@ -1,4 +1,4 @@
-# Photogram
+# SA-Visuals
 
 What is SA-Visuals?
 
